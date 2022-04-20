@@ -45,10 +45,10 @@ class EmptyError(BaseException):
 
 
 def update_quotes(quote):
-    if db.all():
-        dict_quotes = db.all()
+    if type(db.get(User.name == "player_quotes")) is dict:
+        dict_quotes = db.get(User.name == "player_quotes")
         print(dict_quotes)
-        base = dict_quotes[0]['content']
+        base = dict_quotes['content']
         base.append(quote)
         print(base)
         db.update({'content': base})
@@ -57,9 +57,9 @@ def update_quotes(quote):
 
 
 def delete_last_quote():
-    dict_quotes = db.all()
-    base = dict_quotes[0]['content']
-    if base:
+    dict_quotes = db.get(User.name == "player_quotes")
+    base = dict_quotes['content']
+    if type(base) is list:
         base = base[:-1]
         db.update({'content': base})
         return
@@ -68,9 +68,9 @@ def delete_last_quote():
 
 
 def delete_quote(index):
-    dict_quotes = db.all()
-    base = dict_quotes[0]['content']
-    if base:
+    dict_quotes = db.get(User.name == "player_quotes")
+    base = dict_quotes['content']
+    if type(base) is list:
         if len(base) >= index - 1:
             index_element = base.pop(index - 1)
             db.update({'content': base})
@@ -80,9 +80,9 @@ def delete_quote(index):
 
 
 def get_random_quote():
-    dict_quotes = db.all()
-    base = dict_quotes[0]['content']
-    if base:
+    dict_quotes = db.get(User.name == "player_quotes")
+    base = dict_quotes['content']
+    if type(base) is list:
         random_quote = random.choice(base)
         return random_quote
     else:
@@ -90,9 +90,10 @@ def get_random_quote():
 
 
 def get_list():
-    dict_quotes = db.all()
-    base = dict_quotes[0]['content']
-    if base:
+    dict_quotes = db.get(User.name == "player_quotes")
+    print(dict_quotes)
+    base = dict_quotes['content']
+    if type(base) is list:
         print(base)
         result_string = ''
         for index, q in enumerate(base, 1):
@@ -103,9 +104,9 @@ def get_list():
 
 
 def get_last():
-    dict_quotes = db.all()
-    base = dict_quotes[0]['content']
-    if base:
+    dict_quotes = db.get(User.name == "player_quotes")
+    base = dict_quotes['content']
+    if type(base) is list:
         last_quote = base[-1]
         return last_quote
     else:
