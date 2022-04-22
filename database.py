@@ -45,7 +45,7 @@ class EmptyError(BaseException):
 
 
 def update_quotes(quote):
-    if type(db.get(User.name == "player_quotes")) is dict:
+    if db.get(User.name == "player_quotes"):
         dict_quotes = db.get(User.name == "player_quotes")
         print(dict_quotes)
         base = dict_quotes['content']
@@ -84,6 +84,7 @@ def get_random_quote():
     base = dict_quotes['content']
     if type(base) is list:
         random_quote = random.choice(base)
+        print(random_quote)
         return random_quote
     else:
         raise EmptyError
@@ -111,3 +112,5 @@ def get_last():
         return last_quote
     else:
         raise EmptyError
+
+
