@@ -126,7 +126,4 @@ venv.bak/
 dmypy.json
 
 
-test.py
-history_base.db
-history.db
-.json
+db.json
