@@ -164,7 +164,14 @@ async def reserv_open(ctx):
             color=discord.Color.green()
         )
         main_components = rsrv.start_components
-        await ctx.send(embed=embed, components=main_components)
+        reservation_message = await ctx.send(embed=embed, components=main_components)
+        
+        emoji = '\N{THUMBS UP SIGN}'
+        print(reservation_message)
+        
+        
+
+        await reservation_message.add_reaction(emoji)
         while open_reserve_flag:
             # try:
             reserves = database.get_res()
