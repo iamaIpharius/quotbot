@@ -13,9 +13,9 @@ class EmptyError(BaseException):
 
 
 reserv_template = {
-    'United Kingdom': '',
-    'United States main': '',
-    'United States coop': '',
+    'UK': '',
+    'USA main': '',
+    'USA coop': '',
     'France': '',
     'USSR main': '',
     'USSR coop': '',
@@ -155,7 +155,7 @@ def update_res(user, country):
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
-        base[user] = country
+        base[country] = user
         db.update({'content': base}, Cursor.name == "reservations")
     else:
         db.insert({'name': 'reservations', 'content': {country: user}})

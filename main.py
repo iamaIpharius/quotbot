@@ -11,7 +11,7 @@ my_secret = os.getenv('TOKEN')
 client = commands.Bot(command_prefix='$')
 DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
-buttons_list = ['usa_button', 'ger_button', 'uk_button']
+buttons_list = ['usa_main','usa_coop', 'ger_main', 'ger_coop', 'uk']
 open_reserve_flag = False
 
 
