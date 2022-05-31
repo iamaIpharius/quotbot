@@ -167,23 +167,30 @@ async def reserv_open(ctx):
         await ctx.send(embed=embed, components=main_components)
         while open_reserve_flag:
             # try:
-            interaction = await client.wait_for("button_click", check=lambda i: i.custom_id in buttons_list)
-            database.update_res(str(interaction.author), str(interaction.component.label))
             reserves = database.get_res()
-            print(reserves)
-            reserves_result = '\n'.join(' - '.join((key, val)) for (key, val) in reserves.items())
-
-            print(reserves_result)
-
-            embed = discord.Embed(
-                title=msg,
-                color=discord.Color.green(),
-                description=reserves_result
-            )
-            await interaction.message.edit(embed=embed)
-            await interaction.send(f'{interaction.author} reserved {interaction.component.label}')
-            # except:
-            #     await ctx.send('error')
+            interaction = await client.wait_for("button_click", check=lambda i: i.custom_id in buttons_list)
+            if rsrv.check_reservations(interaction, reserves):
+                database.update_res(str(interaction.author), str(interaction.component.label))
+                reserves = database.get_res()
+                print(reserves)
+                reserves_result = '\n'.join(' - '.join((key, val)) for (key, val) in reserves.items())
+    
+                print(reserves_result)
+                
+                
+                new_components = rsrv.change_components(main_components, reserves)
+                
+                embed = discord.Embed(
+                    title=msg,
+                    color=discord.Color.green(),
+                    description=reserves_result
+                )
+                await interaction.message.edit(embed=embed, components=new_components)
+                await interaction.send(f'{interaction.author} reserved {interaction.component.label}')
+                # except:
+                #     await ctx.send('error')
+            else:
+                await interaction.send(f'SORRY, county already reserved or you cannot reserve more than one country')
 
 
 client.run(my_secret)
