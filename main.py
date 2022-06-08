@@ -159,15 +159,17 @@ async def reserv_open(ctx):
         database.open_res()
         open_reserve_flag = True
         msg = 'Here we go! Please choose the country you wanna play'
+
+        main_components = rsrv.start_components
         embed = discord.Embed(
             title=msg,
-            color=discord.Color.green()
+            color=discord.Color.green(),
+            description=main_components
         )
-        main_components = rsrv.start_components
-        reservation_message = await ctx.send(embed=embed, components=main_components)
+        
+        reservation_message = await ctx.send(embed=embed)
         
         emoji = '\N{THUMBS UP SIGN}'
-        print(reservation_message)
         
         
 
