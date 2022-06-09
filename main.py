@@ -11,7 +11,7 @@ my_secret = os.getenv('TOKEN')
 client = commands.Bot(command_prefix='$')
 DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
-buttons_list = ['usa_main','usa_coop', 'ger_main', 'ger_coop', 'uk']
+reactions_list = []
 open_reserve_flag = False
 
 
@@ -158,48 +158,20 @@ async def reserv_open(ctx):
     if check_reservations_channel(ctx):
         database.open_res()
         open_reserve_flag = True
-        msg = 'Here we go! Please choose the country you wanna play'
+        msg = 'Here we go! Please add flag reaction of country you wanna play to!'
 
-        main_components = rsrv.start_components
+        reserves = database.get_res()
+        reserves_result = '\n'.join(
+            ' - '.join((key, val)) for (key, val) in reserves.items())
+
+
         embed = discord.Embed(
             title=msg,
             color=discord.Color.green(),
-            description=main_components
+            description=reserves_result
         )
-        
-        reservation_message = await ctx.send(embed=embed)
-        
-        emoji = '\N{THUMBS UP SIGN}'
-        
-        
 
-        await reservation_message.add_reaction(emoji)
-        while open_reserve_flag:
-            # try:
-            reserves = database.get_res()
-            interaction = await client.wait_for("button_click", check=lambda i: i.custom_id in buttons_list)
-            if rsrv.check_reservations(interaction, reserves):
-                database.update_res(str(interaction.author), str(interaction.component.label))
-                reserves = database.get_res()
-                print(reserves)
-                reserves_result = '\n'.join(' - '.join((key, val)) for (key, val) in reserves.items())
-    
-                print(reserves_result)
-                
-                
-                new_components = rsrv.change_components(main_components, reserves)
-                
-                embed = discord.Embed(
-                    title=msg,
-                    color=discord.Color.green(),
-                    description=reserves_result
-                )
-                await interaction.message.edit(embed=embed, components=new_components)
-                await interaction.send(f'{interaction.author} reserved {interaction.component.label}')
-                # except:
-                #     await ctx.send('error')
-            else:
-                await interaction.send(f'SORRY, county already reserved or you cannot reserve more than one country')
+        await ctx.send(embed=embed)
 
 
 client.run(my_secret)
