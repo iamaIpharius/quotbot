@@ -158,7 +158,7 @@ async def reserv_open(ctx):
     if check_reservations_channel(ctx):
         database.open_res()
         open_reserve_flag = True
-        msg = 'Here we go! Please add flag reaction of country you wanna play to!'
+        msg = 'Here we go! Please add flag reaction of country you wanna play to below this message!'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
@@ -172,6 +172,21 @@ async def reserv_open(ctx):
         )
 
         await ctx.send(embed=embed)
+
+        while open_reserve_flag:
+            reaction, user = await client.wait_for('reaction_add')
+
+## TODO database update and get reserves, and edit message thrgough reaction.message
+
+
+
+
+            if rsrv.check_reserves(reaction, user, reserves):
+                country = rsrv.make_country_name(reaction, reserves)
+                database.update_res(user, country)
+                await ctx.send(f'{user} reserved {reaction}')
+            else:
+                await ctx.send(f'Sorry, country already reserved or you cannot reserve more than 1 country')
 
 
 client.run(my_secret)

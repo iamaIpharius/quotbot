@@ -13,10 +13,10 @@ class EmptyError(BaseException):
 
 
 reserv_template = {
-    'UK': '',
-    'USA main': '',
-    'USA coop': '',
-    'France': '',
+    'UK :flag_gb:': '',
+    'USA main :flag_us:': '',
+    'USA coop :flag_us:': '',
+    'France :flag_fr:': '',
     'USSR main': '',
     'USSR coop': '',
     'China': '',
