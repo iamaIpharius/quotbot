@@ -120,6 +120,12 @@ async def delete(ctx, arg):
     else:
         await ctx.send("Not enough rights:c")
 
+# @client.event
+# async def on_reaction_add(reaction, user):
+#     await reaction.message.channel.send(f"{reaction}, {str(reaction.emoji)}, {str(reaction)}")
+#     print(f"{reaction}, {reaction.emoji}, {str(reaction)}")
+
+
 
 @client.event
 async def on_message(message):
@@ -175,18 +181,56 @@ async def reserv_open(ctx):
 
         while open_reserve_flag:
             reaction, user = await client.wait_for('reaction_add')
-
-## TODO database update and get reserves, and edit message thrgough reaction.message
-
-
+            
 
 
             if rsrv.check_reserves(reaction, user, reserves):
                 country = rsrv.make_country_name(reaction, reserves)
-                database.update_res(user, country)
-                await ctx.send(f'{user} reserved {reaction}')
+                database.update_res(user.name, country)
+
+                reserves = database.get_res()
+                reserves_result = '\n'.join(
+                    ' - '.join((key, val)) for (key, val) in reserves.items())
+
+
+                embed = discord.Embed(
+                    title=msg,
+                    color=discord.Color.green(),
+                    description=reserves_result
+                )
+
+                await reaction.message.edit(embed=embed)
+
+
+
+
+                await ctx.send(f'{user.name} reserved {reaction}')
             else:
                 await ctx.send(f'Sorry, country already reserved or you cannot reserve more than 1 country')
+
+
+## TODO remove reaction and reservation!!!!!!!
+
+
+            reaction_rm, user_rm = await client.wait_for('reaction_remove')
+            country = rsrv.make_country_name(reaction_rm, reserves)
+            database.remove_res(user_rm.name, country)
+
+            reserves = database.get_res()
+            reserves_result = '\n'.join(
+                ' - '.join((key, val)) for (key, val) in reserves.items())
+
+
+            embed = discord.Embed(
+                title=msg,
+                color=discord.Color.green(),
+                description=reserves_result
+            )
+
+            await reaction.message.edit(embed=embed)
+            await ctx.send(f'{user.name} unreserved {reaction}')
+
+
 
 
 client.run(my_secret)

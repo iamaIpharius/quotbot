@@ -17,30 +17,30 @@ reserv_template = {
     'USA main :flag_us:': '',
     'USA coop :flag_us:': '',
     'France :flag_fr:': '',
-    'USSR main': '',
-    'USSR coop': '',
-    'China': '',
-    'British Raj': '',
-    'Canada': '',
-    'Australia': '',
-    'South Africa': '',
-    'New Zealand': '',
-    'Mexico': '',
-    'Brazil': '',
-    'Mongolia': '',
-    'Germany main': '',
-    'Germany coop': '',
-    'Italy': '',
-    'Japan main': '',
-    'Japan coop': '',
-    'Hungary': '',
-    'Romania': '',
-    'Bulgaria': '',
-    'Spain': '',
-    'Finland': '',
-    'Vichy France': '',
-    'Manchukuo': '',
-    'Siam': ''
+    'USSR main 🇷🇺': '',
+    'USSR coop 🇷🇺': '',
+    'China 🇹🇼': '',
+    'British Raj 🇮🇳': '',
+    'Canada 🇨🇦': '',
+    'Australia 🇦🇺': '',
+    'South Africa 🇿🇦': '',
+    'New Zealand 🇳🇿': '',
+    'Mexico 🇲🇽': '',
+    'Brazil 🇧🇷': '',
+    'Mongolia 🇲🇳': '',
+    'Germany main 🇩🇪': '',
+    'Germany coop 🇩🇪': '',
+    'Italy 🇮🇹': '',
+    'Japan main 🇯🇵': '',
+    'Japan coop 🇯🇵': '',
+    'Hungary 🇭🇺': '',
+    'Romania 🇷🇴': '',
+    'Bulgaria 🇧🇬': '',
+    'Spain 🇪🇸': '',
+    'Finland 🇫🇮': '',
+    'Vichy France 🇹🇫': '',
+    'Manchukuo 🇳🇵': '',
+    'Siam 🇹🇭': ''
 }
 
 
@@ -130,6 +130,16 @@ def update_res(user, country):
     else:
         db.insert({'name': 'reservations', 'content': {country: user}})
 
+
+
+def remove_res(user, country):
+    if db.get(Cursor.name == "reservations"):
+        dict_reservations = db.get(Cursor.name == "reservations")
+        base = dict_reservations['content']
+        base[country] = ''
+        db.update({'content': base}, Cursor.name == "reservations")
+    else:
+        db.insert({'name': 'reservations', 'content': {country: user}})
 
 def get_res():
     if db.get(Cursor.name == "reservations"):
