@@ -138,7 +138,7 @@ async def help_res(ctx):
     if check_reservations_channel(ctx):
         msg = """
         Field Marshals and Moderators can open and close reservation process by using commands:\n
-        👉 $reserv_open - Reservations are open! Eberyone is free to reserv\n
+        👉 $reserv_open - Reservations are open! Everyone is free to reserv\n
         👉 $reserv_close - Reservations are closed💀\n\n
         Other commands can be used by everyone!\n
         👉 $res country_name - Reserv the country!\n
@@ -167,7 +167,7 @@ async def help_res(ctx):
 async def reserv_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
-        msg = 'Here we go! Please use command "$res country_name" to reserv country you wanna play!'
+        msg = 'Here we go! Please use command "$res country_name" to reserv country you wanna play, for example "$res germany"!'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
