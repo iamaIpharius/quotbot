@@ -120,12 +120,6 @@ async def delete(ctx, arg):
     else:
         await ctx.send("Not enough rights:c")
 
-# @client.event
-# async def on_reaction_add(reaction, user):
-#     await reaction.message.channel.send(f"{reaction}, {str(reaction.emoji)}, {str(reaction)}")
-#     print(f"{reaction}, {reaction.emoji}, {str(reaction)}")
-
-
 
 @client.event
 async def on_message(message):
@@ -140,12 +134,22 @@ async def on_message(message):
 
 
 @client.command()
-async def helpreserv(ctx):
+async def help_res(ctx):
     if check_reservations_channel(ctx):
-        msg = """Here will be help stuff for reservations"""
+        msg = """
+        Field Marshals and Moderators can open and close reservation process by using commands:\n
+        👉 $reserv_open - Reservations are open! Eberyone is free to reserv\n
+        👉 $reserv_close - Reservations are closed💀\n\n
+        Other commands can be used by everyone!\n
+        👉 $res country_name - Reserv the country!\n
+        👉 $cancel - Cancel your reservation!\n
+        👉 $status - Display the current status of reservations\n 
+        Have fun!
+        Alex production :3
+        """
         embed = discord.Embed(
-            title=msg,
-            description='SOONish...',
+            title="Alright, here's the THING",
+            description=msg,
             color=discord.Color.green()
         )
 
@@ -161,15 +165,13 @@ async def helpreserv(ctx):
 
 @client.command()
 async def reserv_open(ctx):
-    if check_reservations_channel(ctx):
+    if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
-        open_reserve_flag = True
-        msg = 'Here we go! Please add flag reaction of country you wanna play to below this message!'
+        msg = 'Here we go! Please use command "$res country_name" to reserv country you wanna play!'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
             ' - '.join((key, val)) for (key, val) in reserves.items())
-
 
         embed = discord.Embed(
             title=msg,
@@ -179,58 +181,71 @@ async def reserv_open(ctx):
 
         await ctx.send(embed=embed)
 
-        while open_reserve_flag:
-            reaction, user = await client.wait_for('reaction_add')
-            
+
+@client.command()
+async def res(ctx):
+    if check_reservations_channel(ctx) and database.get_flag():
+        msg = ctx.message.content.split("$res ", 1)[1]
+        user = str(ctx.message.author.name)
+        reserves = database.get_res()
+        country = rsrv.make_country_name(msg, reserves)
+        if rsrv.check_reserves_empty(msg, user, reserves):
+            database.update_res(user, country)
+            await ctx.send(f'{user} reserved {country}')
+        else:
+            await ctx.send(f"Prolly country already reserved, or you already have reservation, {user}. Check $status")
 
 
-            if rsrv.check_reserves(reaction, user, reserves):
-                country = rsrv.make_country_name(reaction, reserves)
-                database.update_res(user.name, country)
+@client.command()
+async def cancel(ctx):
+    if check_reservations_channel(ctx) and database.get_flag():
 
-                reserves = database.get_res()
-                reserves_result = '\n'.join(
-                    ' - '.join((key, val)) for (key, val) in reserves.items())
+        user = str(ctx.message.author.name)
+        reserves = database.get_res()
+        if rsrv.check_unreserve(user, reserves):
+            country = database.get_country_by_user(user)
+            database.remove_res(user)
 
-
-                embed = discord.Embed(
-                    title=msg,
-                    color=discord.Color.green(),
-                    description=reserves_result
-                )
-
-                await reaction.message.edit(embed=embed)
+            await ctx.send(f'{user} UNreserved {country}')
+        else:
+            await ctx.send(f"Prolly you did't reserve anything, {user}")
 
 
+@client.command()
+async def status(ctx):
+    if check_reservations_channel(ctx) and database.get_flag():
+        msg = 'Status of the Game'
+
+        reserves = database.get_res()
+        reserves_result = '\n'.join(
+            ' - '.join((key, val)) for (key, val) in reserves.items())
+
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=reserves_result
+        )
+
+        await ctx.send(embed=embed)
 
 
-                await ctx.send(f'{user.name} reserved {reaction}')
-            else:
-                await ctx.send(f'Sorry, country already reserved or you cannot reserve more than 1 country')
+@client.command()
+async def reserv_close(ctx):
+    if check_reservations_channel(ctx) and check_roles(ctx):
+        msg = 'Reservations are closed! Here is final status of the Game'
 
+        reserves = database.get_res()
+        reserves_result = '\n'.join(
+            ' - '.join((key, val)) for (key, val) in reserves.items())
 
-## TODO remove reaction and reservation!!!!!!!
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=reserves_result
+        )
 
-
-            reaction_rm, user_rm = await client.wait_for('reaction_remove')
-            country = rsrv.make_country_name(reaction_rm, reserves)
-            database.remove_res(user_rm.name, country)
-
-            reserves = database.get_res()
-            reserves_result = '\n'.join(
-                ' - '.join((key, val)) for (key, val) in reserves.items())
-
-
-            embed = discord.Embed(
-                title=msg,
-                color=discord.Color.green(),
-                description=reserves_result
-            )
-
-            await reaction.message.edit(embed=embed)
-            await ctx.send(f'{user.name} unreserved {reaction}')
-
-
+        await ctx.send(embed=embed)
+        database.close_res()
 
 
 client.run(my_secret)

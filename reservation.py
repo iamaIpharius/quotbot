@@ -30,21 +30,46 @@ flags_dict = {
     'Siam': '🇹🇭'
 }
 
+country_list = [
+    'UK',
+    'USA main',
+    'USA coop',
+    'France',
+    'USSR main',
+    'USSR coop',
+    'China',
+    'British Raj',
+    'Canada',
+    'Australia',
+    'South Africa',
+    'New Zealand',
+    'Mexico',
+    'Brazil',
+    'Mongolia',
+    'Germany main',
+    'Germany coop',
+    'Italy',
+    'Japan main',
+    'Japan coop',
+    'Hungary',
+    'Romania',
+    'Bulgaria',
+    'Spain',
+    'Finland',
+    'Vichy France',
+    'Manchukuo',
+    'Siam']
 
 
-
-
-
-def check_reserves(reaction, user, reserves):
+def check_reserves_empty(message, user, reserves):
     for val in reserves.values():
-        if str(user.name) in val:
+        if user in val:
             return False
-
 
     country = ''
     for key, value in flags_dict.items():
-        if reaction.emoji == value:
-            country = key     
+        if message.lower() == key.lower():
+            country = key
             for key, value in reserves.items():
                 if country in str(key) and value == '':
                     return True
@@ -52,16 +77,32 @@ def check_reserves(reaction, user, reserves):
     return False
 
 
-def make_country_name(reaction, reserves):
+def check_unreserve(user, reserves):
+    if user in reserves.values():
+        return True
+    return False
+
+
+
+def make_country_name(message, reserves):
     country = ''
     for key, value in flags_dict.items():
-        if reaction.emoji == value:
-            country = key     
+        if message.lower() == key.lower():
+            country = key
             for key, value in reserves.items():
                 if country in key and value == '':
                     return key
 
 
+def country_check(m):
+    country_list = ['uk', 'usa main', 'usa coop', 'france', 'ussr main', 'ussr coop',
+                    'china', 'british raj', 'canada', 'australia',
+                    'south africa', 'new zealand', 'mexico', 'brazil',
+                    'mongolia', 'germany main', 'germany coop', 'italy',
+                    'japan main', 'japan coop', 'hungary', 'romania',
+                    'bulgaria', 'spain', 'finland', 'vichy france', 'manchukuo', 'siam']
+
+    return m.content.lower() in country_list
 
 
-## TODO need proper emojis with proper IDs, and another dict with country names - IDs
+# TODO need proper emojis with proper IDs, and another dict with country names - IDs

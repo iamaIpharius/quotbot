@@ -13,35 +13,67 @@ class EmptyError(BaseException):
 
 
 reserv_template = {
-    'UK :flag_gb:': '',
-    'USA main :flag_us:': '',
-    'USA coop :flag_us:': '',
-    'France :flag_fr:': '',
-    'USSR main 🇷🇺': '',
-    'USSR coop 🇷🇺': '',
-    'China 🇹🇼': '',
-    'British Raj 🇮🇳': '',
-    'Canada 🇨🇦': '',
-    'Australia 🇦🇺': '',
-    'South Africa 🇿🇦': '',
-    'New Zealand 🇳🇿': '',
-    'Mexico 🇲🇽': '',
-    'Brazil 🇧🇷': '',
-    'Mongolia 🇲🇳': '',
-    'Germany main 🇩🇪': '',
-    'Germany coop 🇩🇪': '',
-    'Italy 🇮🇹': '',
-    'Japan main 🇯🇵': '',
-    'Japan coop 🇯🇵': '',
-    'Hungary 🇭🇺': '',
-    'Romania 🇷🇴': '',
-    'Bulgaria 🇧🇬': '',
-    'Spain 🇪🇸': '',
-    'Finland 🇫🇮': '',
-    'Vichy France 🇹🇫': '',
-    'Manchukuo 🇳🇵': '',
-    'Siam 🇹🇭': ''
+    'UK': '',
+    'USA main': '',
+    'USA coop': '',
+    'France': '',
+    'USSR main': '',
+    'USSR coop': '',
+    'China': '',
+    'British Raj': '',
+    'Canada': '',
+    'Australia': '',
+    'South Africa': '',
+    'New Zealand': '',
+    'Mexico': '',
+    'Brazil': '',
+    'Mongolia': '',
+    'Germany main': '',
+    'Germany coop': '',
+    'Italy': '',
+    'Japan main': '',
+    'Japan coop': '',
+    'Hungary': '',
+    'Romania': '',
+    'Bulgaria': '',
+    'Spain': '',
+    'Finland': '',
+    'Vichy France': '',
+    'Manchukuo': '',
+    'Siam': ''
 }
+
+
+# reserv_template = {
+#     'UK :flag_gb:': '',
+#     'USA main :flag_us:': '',
+#     'USA coop :flag_us:': '',
+#     'France :flag_fr:': '',
+#     'USSR main 🇷🇺': '',
+#     'USSR coop 🇷🇺': '',
+#     'China 🇹🇼': '',
+#     'British Raj 🇮🇳': '',
+#     'Canada 🇨🇦': '',
+#     'Australia 🇦🇺': '',
+#     'South Africa 🇿🇦': '',
+#     'New Zealand 🇳🇿': '',
+#     'Mexico 🇲🇽': '',
+#     'Brazil 🇧🇷': '',
+#     'Mongolia 🇲🇳': '',
+#     'Germany main 🇩🇪': '',
+#     'Germany coop 🇩🇪': '',
+#     'Italy 🇮🇹': '',
+#     'Japan main 🇯🇵': '',
+#     'Japan coop 🇯🇵': '',
+#     'Hungary 🇭🇺': '',
+#     'Romania 🇷🇴': '',
+#     'Bulgaria 🇧🇬': '',
+#     'Spain 🇪🇸': '',
+#     'Finland 🇫🇮': '',
+#     'Vichy France 🇹🇫': '',
+#     'Manchukuo 🇳🇵': '',
+#     'Siam 🇹🇭': ''
+# }
 
 
 def update_quotes(quote):
@@ -116,9 +148,11 @@ def get_last():
 
 def open_res():
     if db.get(Cursor.name == "reservations"):
-        db.update({'content': reserv_template}, Cursor.name == "reservations")
+        db.update({'content': reserv_template, 'flag': True},
+                  Cursor.name == "reservations")
     else:
-        db.insert({'name': 'reservations', 'content': reserv_template})
+        db.insert({'name': 'reservations',
+                   'content': reserv_template, 'flag': True})
 
 
 def update_res(user, country):
@@ -131,18 +165,44 @@ def update_res(user, country):
         db.insert({'name': 'reservations', 'content': {country: user}})
 
 
-
-def remove_res(user, country):
+def remove_res(user):
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
-        base[country] = ''
+        for key, value in base.items():
+            if user == value:
+                base[key] = ''
+
         db.update({'content': base}, Cursor.name == "reservations")
-    else:
-        db.insert({'name': 'reservations', 'content': {country: user}})
+
 
 def get_res():
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
         return base
+
+
+def close_res():
+    if db.get(Cursor.name == "reservations"):
+        db.update({'content': reserv_template, 'flag': False},
+                  Cursor.name == "reservations")
+    else:
+        db.insert({'name': 'reservations',
+                   'content': reserv_template, 'flag': False})
+
+
+def get_flag():
+    if db.get(Cursor.name == "reservations"):
+        dict_reservations = db.get(Cursor.name == "reservations")
+        base = dict_reservations['flag']
+        return base
+
+
+def get_country_by_user(user):
+    if db.get(Cursor.name == "reservations"):
+        dict_reservations = db.get(Cursor.name == "reservations")
+        base = dict_reservations['content']
+        for key, value in base.items():
+            if user == value:
+                return str(key)
