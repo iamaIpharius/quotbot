@@ -3,31 +3,31 @@ from discord.ext import commands
 from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
 
 
-flags_dict = {
-    'UK': '🇬🇧',
-    'USA': '🇺🇸',
-    'France': '🇫🇷',
-    'USSR': '🇷🇺',
-    'China': '🇹🇼',
-    'British Raj': '🇮🇳',
-    'Canada': '🇨🇦',
-    'Australia': '🇦🇺',
-    'South Africa': '🇿🇦',
-    'New Zealand': '🇳🇿',
-    'Mexico': '🇲🇽',
-    'Brazil': '🇧🇷',
-    'Mongolia': '🇲🇳',
-    'Germany': '🇩🇪',
-    'Italy': '🇮🇹',
-    'Japan': '🇯🇵',
-    'Hungary': '🇭🇺',
-    'Romania': '🇷🇴',
-    'Bulgaria': '🇧🇬',
-    'Spain': '🇪🇸',
-    'Finland': '🇫🇮',
-    'Vichy France': '🇹🇫',
-    'Manchukuo': '🇳🇵',
-    'Siam': '🇹🇭'
+countrys_dict = {
+    'UK': ['uk', 'united kingdom', 'britain', 'brits', 'england', 'brit', 'eng', 'en', '🇬🇧'],
+    'USA': ['usa', 'us', 'america', 'murica', 'states', 'united states', 'united states of america', '🇺🇸'],
+    'France': ['🇫🇷', 'fr', 'france', 'fronce'],
+    'USSR': ['🇷🇺', 'sov', 'russia', 'soviet', 'ussr', 'stalin', 'gulag', 'vodka'],
+    'China': ['🇹🇼', 'china', 'chi', 'chang'],
+    'British Raj': ['🇮🇳', 'raj', 'india', 'british raj'],
+    'Canada': ['🇨🇦', 'can', 'canada'],
+    'Australia': ['🇦🇺', 'australia', 'aus', 'au', 'aussie', 'kangooroo'],
+    'South Africa': ['🇿🇦', 'saf', 'sa', 'south africa', 'africa'],
+    'New Zealand': ['🇳🇿', 'nz', 'new zealand', 'zealand'],
+    'Mexico': ['🇲🇽', 'mex', 'mexico', 'taco'],
+    'Brazil': ['🇧🇷', 'br', 'brazil'],
+    'Mongolia': ['🇲🇳', 'mon', 'mongolia'],
+    'Germany': ['🇩🇪', 'ger', 'germany', 'hitler', 'wiener', 'beer'],
+    'Italy': ['🇮🇹', 'mama mia', 'ita', 'italy', 'spaghetti', 'pizza'],
+    'Japan': ['🇯🇵', 'anime', 'jp', 'japan', 'sushi', 'emperor', 'ninja', 'hentai'],
+    'Hungary': ['🇭🇺', 'hun', 'hungary', 'hungry', 'gulas', 'horti', 'horny'],
+    'Romania': ['🇷🇴', 'rom', 'romania', 'ganymania'],
+    'Bulgaria': ['🇧🇬', 'bul', 'bulgaria', 'bowlgaria', 'bulgreenia'],
+    'Spain': ['🇪🇸', 'spain', 'pain'],
+    'Finland': ['🇫🇮', 'fin', 'finland', 'perkele', 'niet molotov'],
+    'Vichy France': ['vichy', 'vichy france'],
+    'Manchukuo': ['man', 'manchukuo', 'manchu', 'manchuria'],
+    'Siam': ['🇹🇭', 'siam', 'thai', 'thailand']
 }
 
 country_list = [
@@ -67,8 +67,8 @@ def check_reserves_empty(message, user, reserves):
             return False
 
     country = ''
-    for key, value in flags_dict.items():
-        if message.lower() in key.lower():
+    for key, value in countrys_dict.items():
+        if message.lower() in value:
             country = key
             for key, value in reserves.items():
                 if country in str(key) and value == '':
@@ -85,8 +85,8 @@ def check_unreserve(user, reserves):
 
 def make_country_name(message, reserves):
     country = ''
-    for key, value in flags_dict.items():
-        if message.lower() in key.lower():
+    for key, value in countrys_dict.items():
+        if message.lower() in value:
             country = key
             for key, value in reserves.items():
                 if country in key and value == '':
@@ -94,13 +94,7 @@ def make_country_name(message, reserves):
 
 
 def country_check(m):
-    country_list = ['uk', 'usa main', 'usa coop', 'france', 'ussr main', 'ussr coop',
-                    'china', 'british raj', 'canada', 'australia',
-                    'south africa', 'new zealand', 'mexico', 'brazil',
-                    'mongolia', 'germany main', 'germany coop', 'italy',
-                    'japan main', 'japan coop', 'hungary', 'romania',
-                    'bulgaria', 'spain', 'finland', 'vichy france', 'manchukuo', 'siam']
-    for country in country_list:
-        if m.lower() in country:
+    for countries in countrys_dict.values():
+        if m.lower() in countries:
             return True
     return False

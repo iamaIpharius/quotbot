@@ -14,7 +14,8 @@ DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
 reactions_list = []
 open_reserve_flag = False
-cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous']
+cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous', 'cutie pie',
+                   'sunshine', 'sweetheart', 'muffin', 'sweetheart', 'sweet pea', 'cutie patootie']
 
 
 def check_roles(msg):
@@ -32,7 +33,7 @@ def check_roles(msg):
 def check_reservations_channel(msg):
     chl = str(msg.channel)
     if chl in ['reservationstest', 'reservations']:
-        print(chl)
+
         return True
     return False
 
