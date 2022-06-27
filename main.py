@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import database
 import reservation as rsrv
+import random
 
 load_dotenv()
 my_secret = os.getenv('TOKEN')
@@ -13,6 +14,7 @@ DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
 reactions_list = []
 open_reserve_flag = False
+cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous']
 
 
 def check_roles(msg):
@@ -178,22 +180,35 @@ async def reserv_open(ctx):
             color=discord.Color.green(),
             description=reserves_result
         )
-
         await ctx.send(embed=embed)
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+    elif not check_roles(cts):
+        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} =() ")
 
 
 @client.command()
 async def res(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
         msg = ctx.message.content.split("$res ", 1)[1]
-        user = str(ctx.message.author.name)
-        reserves = database.get_res()
-        country = rsrv.make_country_name(msg, reserves)
-        if rsrv.check_reserves_empty(msg, user, reserves):
-            database.update_res(user, country)
-            await ctx.send(f'{user} reserved {country}')
+        if rsrv.country_check(msg):
+            user = str(ctx.message.author.name)
+            reserves = database.get_res()
+            country = rsrv.make_country_name(msg, reserves)
+            if rsrv.check_reserves_empty(msg, user, reserves):
+                database.update_res(user, country)
+                await ctx.send(f'{user} reserved {country}')
+            else:
+                await ctx.send(f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)}. Check $status")
         else:
-            await ctx.send(f"Prolly country already reserved, or you already have reservation, {user}. Check $status")
+            await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
 
 
 @client.command()
@@ -208,7 +223,13 @@ async def cancel(ctx):
 
             await ctx.send(f'{user} UNreserved {country}')
         else:
-            await ctx.send(f"Prolly you did't reserve anything, {user}")
+            await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)}")
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
 
 
 @client.command()
@@ -228,10 +249,16 @@ async def status(ctx):
 
         await ctx.send(embed=embed)
 
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
+
 
 @client.command()
 async def reserv_close(ctx):
-    if check_reservations_channel(ctx) and check_roles(ctx):
+    if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
         msg = 'Reservations are closed! Here is final status of the Game'
 
         reserves = database.get_res()
@@ -246,6 +273,15 @@ async def reserv_close(ctx):
 
         await ctx.send(embed=embed)
         database.close_res()
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+
+    elif not check_roles(cts):
+        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} =(")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
 
 
 client.run(my_secret)

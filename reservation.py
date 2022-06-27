@@ -68,7 +68,7 @@ def check_reserves_empty(message, user, reserves):
 
     country = ''
     for key, value in flags_dict.items():
-        if message.lower() == key.lower():
+        if message.lower() in key.lower():
             country = key
             for key, value in reserves.items():
                 if country in str(key) and value == '':
@@ -83,11 +83,10 @@ def check_unreserve(user, reserves):
     return False
 
 
-
 def make_country_name(message, reserves):
     country = ''
     for key, value in flags_dict.items():
-        if message.lower() == key.lower():
+        if message.lower() in key.lower():
             country = key
             for key, value in reserves.items():
                 if country in key and value == '':
@@ -101,8 +100,7 @@ def country_check(m):
                     'mongolia', 'germany main', 'germany coop', 'italy',
                     'japan main', 'japan coop', 'hungary', 'romania',
                     'bulgaria', 'spain', 'finland', 'vichy france', 'manchukuo', 'siam']
-
-    return m.content.lower() in country_list
-
-
-# TODO need proper emojis with proper IDs, and another dict with country names - IDs
+    for country in country_list:
+        if m.lower() in country:
+            return True
+    return False
