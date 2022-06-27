@@ -12,8 +12,6 @@ my_secret = os.getenv('TOKEN')
 client = commands.Bot(command_prefix='$')
 DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
-reactions_list = []
-open_reserve_flag = False
 cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous', 'cutie pie',
                    'sunshine', 'sweetheart', 'muffin', 'sweetheart', 'sweet pea', 'cutie patootie']
 
@@ -52,23 +50,43 @@ async def on_message(message):
 
 @client.command()
 async def bothelp(ctx):
-    message = """I send quotes from players!\n
-    If you want quote - just type "hoi4" or "hearts"\n\n
-    Other commands:\n
-    $add "quote" - add a new quote\n
-    $botlist - show list of quotes\n
-    $delete_last - delete last added quote\n
-    $last - recive last added quote\n
-    $delete "index of quote" - delete added quote by index\n\n
-    Have fun!\n\n"""
+    if check_reservations_channel(ctx):
+        msg = """
+        Field Marshals and Moderators can open and close reservation process by using commands:\n
+        👉 $res_open - Reservations are open! Everyone is free to reserv\n
+        👉 $res_close - Reservations are closed💀\n\n
+        Other commands can be used by everyone!\n
+        👉 $res country_name - Reserv the country!\n
+        👉 $cancel - Cancel your reservation!\n
+        👉 $status - Display the current status of reservations\n 
+        Have fun!
+        Alex production :3
+        """
+        embed = discord.Embed(
+            title="Alright, here's the THING",
+            description=msg,
+            color=discord.Color.green()
+        )
 
-    embed = discord.Embed(
-        title="Hello! I'm QuotBot!",
-        description=message,
-        color=discord.Color.blue()
-    )
+        await ctx.send(embed=embed)
+    else:
+        message = """I send quotes from players!\n
+        If you want quote - just type "hoi4" or "hearts"\n\n
+        Other commands:\n
+        $add "quote" - add a new quote\n
+        $list - show list of quotes\n
+        $delete_last - delete last added quote\n
+        $last - recive last added quote\n
+        $delete "index of quote" - delete added quote by index\n\n
+        Have fun!\n\n"""
 
-    await ctx.send(embed=embed)
+        embed = discord.Embed(
+            title="Hello! I'm QuotBot!",
+            description=message,
+            color=discord.Color.blue()
+        )
+
+        await ctx.send(embed=embed)
 
 
 @client.command()
@@ -94,7 +112,7 @@ async def delete_last(ctx):
 
 
 @client.command()
-async def botlist(ctx):
+async def list(ctx):
     try:
         result = database.get_list()
         await ctx.send(result)
@@ -135,39 +153,8 @@ async def on_message(message):
             await message.channel.send("There is none, please add some")
     await client.process_commands(message)
 
-
 @client.command()
-async def help_res(ctx):
-    if check_reservations_channel(ctx):
-        msg = """
-        Field Marshals and Moderators can open and close reservation process by using commands:\n
-        👉 $reserv_open - Reservations are open! Everyone is free to reserv\n
-        👉 $reserv_close - Reservations are closed💀\n\n
-        Other commands can be used by everyone!\n
-        👉 $res country_name - Reserv the country!\n
-        👉 $cancel - Cancel your reservation!\n
-        👉 $status - Display the current status of reservations\n 
-        Have fun!
-        Alex production :3
-        """
-        embed = discord.Embed(
-            title="Alright, here's the THING",
-            description=msg,
-            color=discord.Color.green()
-        )
-
-        await ctx.send(embed=embed)
-    else:
-        msg = """Sorry, works only in Reservation channel"""
-        embed = discord.Embed(
-            title=msg,
-            color=discord.Color.red()
-        )
-        await ctx.send(embed=embed)
-
-
-@client.command()
-async def reserv_open(ctx):
+async def res_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
         msg = 'Here we go! Please use command "$res country_name" to reserv country you wanna play, for example "$res germany"!'
@@ -258,7 +245,7 @@ async def status(ctx):
 
 
 @client.command()
-async def reserv_close(ctx):
+async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
         msg = 'Reservations are closed! Here is final status of the Game'
 
