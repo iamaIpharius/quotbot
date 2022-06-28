@@ -60,7 +60,13 @@ async def bothelp(ctx):
         👉 $cancel - Cancel your reservation!\n
         👉 $status - Display the current status of reservations\n 
         Have fun!
-        Alex production :3
+        Important notes:\n
+        🖋️ If you reserve a nation please be willing and able to show up on time on game day.\n
+        🖋️ If you reserve a nation and do not show you may lose the ability to reserve a nation in the future for an amount of time\n
+        🖋️ If you are reserving a Major please be capable of playing said nation, or have an experienced co-op to guide you. If you are unsure please ask the staff.\n
+        🖋️ The faction leaders may decide on their choice of minors at game start, this will override any reservations made.\n
+        🖋️ If you reserve a nation two games in a row your reservation may be superseded by someone else. Exemptions can be made by staff.\n
+        🖋️ Staff reserve the right to move players off their reservations (Major or Minor) at start time to balance the game.\n
         """
         embed = discord.Embed(
             title="Alright, here's the THING",
