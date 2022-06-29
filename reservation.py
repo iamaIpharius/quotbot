@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
+import random
 
 
 countrys_dict = {
@@ -98,3 +99,9 @@ def country_check(m):
         if m.lower() in countries:
             return True
     return False
+
+def luck_choice():
+    l = []
+    for key in countrys_dict.keys():
+        l.append(key)
+    return random.choice(l)

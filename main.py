@@ -59,6 +59,7 @@ async def bothelp(ctx):
         👉 $res country_name - Reserv the country!\n
         👉 $cancel - Cancel your reservation!\n
         👉 $status - Display the current status of reservations\n 
+        👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n 
         Have fun!
         Important notes:\n
         🖋️ If you reserve a nation please be willing and able to show up on time on game day.\n
@@ -79,11 +80,11 @@ async def bothelp(ctx):
         message = """I send quotes from players!\n
         If you want quote - just type "hoi4" or "hearts"\n\n
         Other commands:\n
-        $add "quote" - add a new quote\n
-        $list - show list of quotes\n
-        $delete_last - delete last added quote\n
-        $last - recive last added quote\n
-        $delete "index of quote" - delete added quote by index\n\n
+        ( ͡° ͜ʖ ͡°) $add "quote" - add a new quote\n
+        ( ͡° ͜ʖ ͡°) $list - show list of quotes\n
+        ( ͡° ͜ʖ ͡°) $delete_last - delete last added quote\n
+        ( ͡° ͜ʖ ͡°) $last - recive last added quote\n
+        ( ͡° ͜ʖ ͡°) $delete "index of quote" - delete added quote by index\n\n
         Have fun!\n\n"""
 
         embed = discord.Embed(
@@ -199,7 +200,7 @@ async def res(ctx):
             await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
 
     elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
@@ -273,6 +274,29 @@ async def res_close(ctx):
 
     elif not check_roles(cts):
         await ctx.send(f"Not enough rights, {random.choice(cute_names_list)} :c")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+
+@client.command()
+async def luck(ctx):
+    if check_reservations_channel(ctx) and database.get_flag():
+        user = str(ctx.message.author.name)
+        reserves = database.get_res()
+        msg = rsrv.luck_choice()
+        
+        while not rsrv.check_reserves_empty(msg, user, reserves):
+            msg = rsrv.luck_choice()
+
+        country = rsrv.make_country_name(msg, reserves)
+        database.update_res(user, country)
+        await ctx.send(f'{user} reserved {country}')
+        
+
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
