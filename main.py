@@ -163,7 +163,7 @@ async def on_message(message):
 async def res_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
-        msg = 'Here we go! Please use command "$res country_name" to reserv country you wanna play, for example "$res germany"!'
+        msg = 'Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command "$res country_name" to reserv country you wanna play, for example "$res germany"!'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
@@ -177,9 +177,9 @@ async def res_open(ctx):
         await ctx.send(embed=embed)
 
     elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
     elif not check_roles(cts):
-        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} =() ")
+        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} :c")
 
 
 @client.command()
@@ -202,7 +202,7 @@ async def res(ctx):
         await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
 
     else:
-        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 
 @client.command()
@@ -215,15 +215,15 @@ async def cancel(ctx):
             country = database.get_country_by_user(user)
             database.remove_res(user)
 
-            await ctx.send(f'{user} UNreserved {country}')
+            await ctx.send(f'{user} UNreserved {country} 🏳️')
         else:
             await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)}")
 
     elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
     else:
-        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 
 @client.command()
@@ -244,10 +244,10 @@ async def status(ctx):
         await ctx.send(embed=embed)
 
     elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
     else:
-        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 
 @client.command()
@@ -269,13 +269,13 @@ async def res_close(ctx):
         database.close_res()
 
     elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel {random.choice(cute_names_list)}")
+        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
     elif not check_roles(cts):
-        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} =(")
+        await ctx.send(f"Not enough rights, {random.choice(cute_names_list)} :c")
 
     else:
-        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)}")
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 
 client.run(my_secret)
