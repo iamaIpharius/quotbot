@@ -116,7 +116,6 @@ def get_random_quote():
     base = dict_quotes['content']
     if type(base) is list:
         random_quote = random.choice(base)
-        print(random_quote)
         return random_quote
     else:
         raise EmptyError
@@ -124,10 +123,8 @@ def get_random_quote():
 
 def get_list():
     dict_quotes = db.get(Cursor.name == "player_quotes")
-    print(dict_quotes)
     base = dict_quotes['content']
     if type(base) is list:
-        print(base)
         result_string = ''
         for index, q in enumerate(base, 1):
             result_string = result_string + f"{index}. {q}\n"
