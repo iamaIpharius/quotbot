@@ -31,7 +31,6 @@ def check_roles(msg):
 def check_reservations_channel(msg):
     chl = str(msg.channel)
     if chl in ['reservationstest', 'reservations']:
-
         return True
     return False
 
@@ -160,6 +159,7 @@ async def on_message(message):
             await message.channel.send("There is none, please add some")
     await client.process_commands(message)
 
+
 @client.command()
 async def res_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
@@ -195,7 +195,8 @@ async def res(ctx):
                 database.update_res(user, country)
                 await ctx.send(f'{user} reserved {country}')
             else:
-                await ctx.send(f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)}. Check $status")
+                await ctx.send(
+                    f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)}. Check $status")
         else:
             await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
 
@@ -272,7 +273,7 @@ async def res_close(ctx):
     elif not check_reservations_channel(ctx):
         await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
-    elif not check_roles(cts):
+    elif not check_roles(ctx):
         await ctx.send(f"Not enough rights, {random.choice(cute_names_list)} :c")
 
     else:
@@ -282,17 +283,20 @@ async def res_close(ctx):
 @client.command()
 async def luck(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
+
         user = str(ctx.message.author.name)
         reserves = database.get_res()
-        msg = rsrv.luck_choice()
-        
-        while not rsrv.check_reserves_empty(msg, user, reserves):
-            msg = rsrv.luck_choice()
+        if not rsrv.check_unreserve(user, reserves):
+            country = rsrv.luck_choice(reserves)
+            database.update_res(user, country)
+            await ctx.send(f'{user} reserved {country}')
+        else:
+            database.remove_res(user)
+            reserves = database.get_res()
+            country = rsrv.luck_choice(reserves)
+            database.update_res(user, country)
+            await ctx.send(f'{user} reserved {country}')
 
-        country = rsrv.make_country_name(msg, reserves)
-        database.update_res(user, country)
-        await ctx.send(f'{user} reserved {country}')
-        
 
 
     elif not check_reservations_channel(ctx):

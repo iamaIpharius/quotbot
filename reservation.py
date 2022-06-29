@@ -77,7 +77,6 @@ def check_reserves_empty(message, user, reserves):
 
     return False
 
-
 def check_unreserve(user, reserves):
     if user in reserves.values():
         return True
@@ -100,8 +99,9 @@ def country_check(m):
             return True
     return False
 
-def luck_choice():
+def luck_choice(reserves):
     l = []
-    for key in countrys_dict.keys():
-        l.append(key)
+    for key, value in reserves.items():
+        if value == '':
+            l.append(key)
     return random.choice(l)
