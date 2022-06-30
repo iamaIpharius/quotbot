@@ -52,10 +52,10 @@ async def bothelp(ctx):
     if check_reservations_channel(ctx):
         msg = """
         Field Marshals and Moderators can open and close reservation process by using commands:\n
-        👉 $res_open - Reservations are open! Everyone is free to reserv\n
-        👉 $res_close - Reservations are closed💀\n\n
+        👉 $res_open - Reservations are open! Everyone is free to reserve\n
+        👉 $res_close - Reservations are closed 💀\n\n
         Other commands can be used by everyone!\n
-        👉 $res country_name - Reserv the country!\n
+        👉 $res country_name - Reserve the country!\n
         👉 $cancel - Cancel your reservation!\n
         👉 $status - Display the current status of reservations\n 
         👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n 
@@ -166,7 +166,7 @@ async def on_message(message):
 async def res_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
-        msg = 'Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command "$res country_name" to reserv country you wanna play, for example "$res germany"!'
+        msg = 'Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command "$res country_name" to reserve country that you wanna play, for example "$res germany"!'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
@@ -219,7 +219,7 @@ async def cancel(ctx):
             country = database.get_country_by_user(user)
             database.remove_res(user)
 
-            await ctx.send(f'{user} UNreserved **{country}** 🏳️')
+            await ctx.send(f'{user} unreserved **{country}** 🏳️')
         else:
             await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
@@ -257,7 +257,7 @@ async def status(ctx):
 @client.command()
 async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
-        msg = 'Reservations are closed! Here is final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)'
+        msg = "Reservations are closed! Here's the final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)"
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
