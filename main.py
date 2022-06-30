@@ -9,7 +9,7 @@ import random
 
 load_dotenv()
 my_secret = os.getenv('TOKEN')
-client = commands.Bot(command_prefix='$')
+client = commands.Bot(command_prefix='$', help_command=None)
 DiscordComponents(client)
 key_words = ['hearts', 'hoi4']
 cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous', 'cutie pie',
@@ -48,9 +48,9 @@ async def on_message(message):
 
 
 @client.command()
-async def bothelp(ctx):
+async def help(ctx):
     if check_reservations_channel(ctx):
-        msg = """
+        msg = """### Below you can see **Reservations rules** and **Commands** to use bot 🤖\n\n
         Field Marshals and Moderators can open and close reservation process by using commands:\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
         👉 $res_close - Reservations are closed 💀\n\n
@@ -60,7 +60,7 @@ async def bothelp(ctx):
         👉 $status - Display the current status of reservations\n 
         👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n 
         Have fun!
-        Important notes:\n
+        Reservations rules:\n
         🖋️ This script applies to Historical games.\n
         🖋️ If you reserve a nation please be willing and able to show up on time on game day.\n
         🖋️ If you reserve a nation and do not show you may lose the ability to reserve a nation in the future for an amount of time\n
@@ -90,7 +90,7 @@ async def bothelp(ctx):
         """
 
         embed = discord.Embed(
-            title="Hello! I'm QuotBot!",
+            title="Hello! I'm QuotBot! 🤖",
             description=message,
             color=discord.Color.blue()
         )
