@@ -103,7 +103,7 @@ async def add(ctx):
     if check_roles(ctx):
         new_quote = ctx.message.content.split("$add ", 1)[1]
         database.update_quotes(new_quote)
-        await ctx.send("New quote added!")
+        await ctx.send("New quote added! **( ͡° ͜ʖ ͡°)**")
     else:
         await ctx.send("Not enough rights:c")
 
@@ -195,7 +195,7 @@ async def res(ctx):
             country = rsrv.make_country_name(msg, reserves)
             if rsrv.check_reserves_empty(msg, user, reserves):
                 database.update_res(user, country)
-                await ctx.send(f'{user} reserved {country}')
+                await ctx.send(f'{user} reserved **{country}** ｡◕‿‿◕｡')
             else:
                 await ctx.send(
                     f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
@@ -219,7 +219,7 @@ async def cancel(ctx):
             country = database.get_country_by_user(user)
             database.remove_res(user)
 
-            await ctx.send(f'{user} UNreserved {country} 🏳️')
+            await ctx.send(f'{user} UNreserved **{country}** 🏳️')
         else:
             await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
@@ -257,7 +257,7 @@ async def status(ctx):
 @client.command()
 async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
-        msg = 'Reservations are closed! Here is final status of the Game'
+        msg = 'Reservations are closed! Here is final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
@@ -293,7 +293,7 @@ async def luck(ctx):
             database.update_res(user, country)
             lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
-            await ctx.send(f'Lucky choice for {user} is {country} {lucky_str}')
+            await ctx.send(f'Lucky choice for {user} is **{country}** {lucky_str}')
         else:
             database.remove_res(user)
             reserves = database.get_res()
@@ -301,7 +301,7 @@ async def luck(ctx):
             database.update_res(user, country)
             lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
-            await ctx.send(f'Lucky choice for {user} is {country} {lucky_str}')
+            await ctx.send(f'Lucky choice for {user} is **{country}** {lucky_str}')
 
 
 
