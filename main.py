@@ -51,6 +51,8 @@ async def on_message(message):
 async def help(ctx):
     if check_reservations_channel(ctx):
         msg = """### Below you can see **Reservations rules** and **Commands** to use bot 🤖\n\n
+        🗒️ Nations can be reserved by their name, their flag, and their tag\n 
+        🗒️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)\n\n
         Field Marshals and Moderators can open and close reservation process by using commands:\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
         👉 $res_close - Reservations are closed 💀\n\n
@@ -166,16 +168,21 @@ async def on_message(message):
 async def res_open(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
-        msg = 'Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command "$res country_name" to reserve country that you wanna play, for example "$res germany"!'
+        msg = "Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command $res to reserve country that you wanna play!\n"
 
         reserves = database.get_res()
+        reserves_message_head = """
+        🖋️ Nations can be reserved by their name, their flag, and their tag\n 
+        🖋️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)
+
+        """
         reserves_result = '\n'.join(
             ' - '.join((key, val)) for (key, val) in reserves.items())
 
         embed = discord.Embed(
             title=msg,
             color=discord.Color.green(),
-            description=reserves_result
+            description=reserves_message_head + reserves_result
         )
         await ctx.send(embed=embed)
 
