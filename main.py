@@ -77,7 +77,7 @@ async def help(ctx):
 
         await ctx.send(embed=embed)
     else:
-        message = """I send quotes from players!\n
+        message = """I can send quotes from players and manage reservations!\n
         If you want quote - just type "hoi4" or "hearts"\n\n
         Other commands:\n
         ( ͡° ͜ʖ ͡°) $add "quote" - add a new quote\n
@@ -86,11 +86,11 @@ async def help(ctx):
         ( ͡° ͜ʖ ͡°) $last - recive last added quote\n
         ( ͡° ͜ʖ ͡°) $delete "index of quote" - delete added quote by index\n\n
         Have fun!\n\n
-        P.S. You can check reservation rules by typing this command in #reservations channel!\n
+        You can check reservation rules by typing $help command in #reservations channel!\n
         """
 
         embed = discord.Embed(
-            title="Hello! I'm QuotBot! 🤖",
+            title=f"Hello! I'm {client.user.name}! 🤖",
             description=message,
             color=discord.Color.blue()
         )
@@ -195,7 +195,7 @@ async def res(ctx):
             country = rsrv.make_country_name(msg, reserves)
             if rsrv.check_reserves_empty(msg, user, reserves):
                 database.update_res(user, country)
-                await ctx.send(f'{user} reserved **{country}** ｡◕‿‿◕｡')
+                await ctx.send(f'{user} reserved **{country}**!')
             else:
                 await ctx.send(
                     f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
