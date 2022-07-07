@@ -197,12 +197,13 @@ async def res(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
         msg = ctx.message.content.split("$res ", 1)[1]
         if rsrv.country_check(msg):
-            user = ctx.message.author.mention
+            user = ctx.message.author.display_name
+            user_mention = ctx.message.author.mention
             reserves = database.get_res()
             country = rsrv.make_country_name(msg, reserves)
             if rsrv.check_reserves_empty(msg, user, reserves):
                 database.update_res(user, country)
-                await ctx.send(f'{user} reserved **{country}**!')
+                await ctx.send(f'{user_mention} reserved **{country}**!')
             else:
                 await ctx.send(
                     f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
@@ -220,13 +221,14 @@ async def res(ctx):
 async def cancel(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
 
-        user = ctx.message.author.mention
+        user = ctx.message.author.display_name
+        user_mention = ctx.message.author.mention
         reserves = database.get_res()
         if rsrv.check_unreserve(user, reserves):
             country = database.get_country_by_user(user)
             database.remove_res(user)
 
-            await ctx.send(f'{user} unreserved **{country}** 🏳️')
+            await ctx.send(f'{user_mention} unreserved **{country}** 🏳️')
         else:
             await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
@@ -240,11 +242,11 @@ async def cancel(ctx):
 @client.command()
 async def status(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
-        msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ)'
+        msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ:･ﾟ✧ ✧ﾟ･: ヽ(◕ヮ◕ヽ)'
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
-            ' - '.join((key, val)) for (key, val) in reserves.items())
+            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
         embed = discord.Embed(
             title=msg,
@@ -268,7 +270,7 @@ async def res_close(ctx):
 
         reserves = database.get_res()
         reserves_result = '\n'.join(
-            ' - '.join((key, val)) for (key, val) in reserves.items())
+            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
         embed = discord.Embed(
             title=msg,
@@ -293,14 +295,15 @@ async def res_close(ctx):
 async def luck(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
 
-        user = ctx.message.author.mention
+        user = ctx.message.author.display_name
+        user_mention = ctx.message.author.mention
         reserves = database.get_res()
         if not rsrv.check_unreserve(user, reserves):
             country = rsrv.luck_choice(reserves)
             database.update_res(user, country)
             lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
-            await ctx.send(f'Lucky choice for {user} is **{country}** {lucky_str}')
+            await ctx.send(f'Lucky choice for {user_mention} is **{country}** {lucky_str}')
         else:
             database.remove_res(user)
             reserves = database.get_res()
@@ -308,7 +311,7 @@ async def luck(ctx):
             database.update_res(user, country)
             lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
-            await ctx.send(f'Lucky choice for {user} is **{country}** {lucky_str}')
+            await ctx.send(f'Lucky choice for {user_mention} is **{country}** {lucky_str}')
 
 
 
