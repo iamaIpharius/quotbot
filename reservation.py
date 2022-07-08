@@ -85,6 +85,7 @@ def check_reserves_empty(message, user, reserves):
 
     return False
 
+
 def check_unreserve(user, reserves):
     if user in reserves.values():
         return True
@@ -106,6 +107,7 @@ def country_check(m):
         if m.lower() in countries:
             return True
     return False
+
 
 def luck_choice(reserves):
     l = []

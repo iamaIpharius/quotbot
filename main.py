@@ -15,7 +15,10 @@ key_words = ['hearts', 'hoi4']
 cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous', 'cutie pie',
                    'sunshine', 'sweetheart', 'muffin', 'sweetheart', 'sweet pea', 'cutie patootie']
 
-lucky_choice_emotes = ['✨', '🌟', '🔥', '🥳', '🍀', '☘️', '😂', '😹', "😊", '😎', '🦄', '🍭', '🎈', '🎢', '🎡', '⚡', '🧙', '🎇', '🎆', '💎', '🌠', '😀', '🌞']
+lucky_choice_emotes = ['✨', '🌟', '🔥', '🥳', '🍀', '☘️', '😂', '😹', "😊",
+                       '😎', '🦄', '🍭', '🎈', '🎢', '🎡', '⚡', '🧙', '🎇', '🎆', '💎', '🌠', '😀', '🌞']
+
+
 def check_roles(msg):
     try:
         author_roles = msg.author.roles
@@ -51,7 +54,7 @@ async def on_message(message):
 async def help(ctx):
     if check_reservations_channel(ctx):
         msg = """### Below you can see **Reservations rules** and **Commands** to use bot 🤖\n\n
-        🗒️ Nations can be reserved by their name, their flag, and their tag\n 
+        🗒️ Nations can be reserved by their name, their flag, and their tag\n
         🗒️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)\n\n
         Field Marshals and Moderators can open and close reservation process by using commands:\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
@@ -59,8 +62,8 @@ async def help(ctx):
         Other commands can be used by everyone!\n
         👉 $res country_name - Reserve the country!\n
         👉 $cancel - Cancel your reservation!\n
-        👉 $status - Display the current status of reservations\n 
-        👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n 
+        👉 $status - Display the current status of reservations\n
+        👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n
         Have fun!
         Reservations rules:\n
         🖋️ This script applies to Historical games.\n
@@ -172,7 +175,7 @@ async def res_open(ctx):
 
         reserves = database.get_res()
         reserves_message_head = """
-        🖋️ Nations can be reserved by their name, their flag, and their tag\n 
+        🖋️ Nations can be reserved by their name, their flag, and their tag\n
         🖋️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)
 
         """
@@ -301,7 +304,8 @@ async def luck(ctx):
         if not rsrv.check_unreserve(user, reserves):
             country = rsrv.luck_choice(reserves)
             database.update_res(user, country)
-            lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
+            lucky_str = ''.join(
+                [random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
             await ctx.send(f'Lucky choice for {user_mention} is **{country}** {lucky_str}')
         else:
@@ -309,11 +313,10 @@ async def luck(ctx):
             reserves = database.get_res()
             country = rsrv.luck_choice(reserves)
             database.update_res(user, country)
-            lucky_str = ''.join([random.choice(lucky_choice_emotes) for _ in range(3)])
+            lucky_str = ''.join(
+                [random.choice(lucky_choice_emotes) for _ in range(3)])
             lucky_str = lucky_str + lucky_str[1] + lucky_str[0]
             await ctx.send(f'Lucky choice for {user_mention} is **{country}** {lucky_str}')
-
-
 
     elif not check_reservations_channel(ctx):
         await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
