@@ -200,7 +200,7 @@ async def res(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
         msg = ctx.message.content.split("$res ", 1)[1]
         if rsrv.country_check(msg):
-            user = ctx.message.author.name
+            user = ctx.message.author.display_name
             user_mention = ctx.message.author.mention
             reserves = database.get_res()
             country = rsrv.make_country_name(msg, reserves)
@@ -224,7 +224,7 @@ async def res(ctx):
 async def cancel(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
 
-        user = ctx.message.author.name
+        user = ctx.message.author.display_name
         user_mention = ctx.message.author.mention
         reserves = database.get_res()
         if rsrv.check_unreserve(user, reserves):
@@ -298,7 +298,7 @@ async def res_close(ctx):
 async def luck(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
 
-        user = ctx.message.author.name
+        user = ctx.message.author.display_name
         user_mention = ctx.message.author.mention
         reserves = database.get_res()
         if not rsrv.check_unreserve(user, reserves):
