@@ -174,14 +174,21 @@ async def on_message(message):
             await message.channel.send("There is none, please add some")
     await client.process_commands(message)
     if check_bot_channel(message):
+        if message.author == client.user:
+            return
         if message.attachments:
             print(message.attachments)
             img_url = message.attachments[0].url
             level = 5
             if type(message.content) == int and 0 < message.content <= 10:
                 level = message.content
-            gl_image = gl.do_glitch(img_url, level)
-            await message.channel.send(file=gl_image)
+            gl.do_glitch(img_url, level)
+            if img_url.endswith('jpg'):
+                gl_image = discord.File(open('glitched_test.jpg', 'rb'))
+                await message.channel.send('Here you are!', file=gl_image)
+            elif img_url.endswith('png'):
+                gl_image = discord.File(open('glitched_test.png', 'rb'))
+                await message.channel.send('Here you are!', file=gl_image)
 
 
 @client.command()
