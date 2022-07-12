@@ -210,6 +210,9 @@ async def res(ctx):
             else:
                 await ctx.send(
                     f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
+        elif msg in ['bhutan']:
+            await ctx.send(f"Hey {random.choice(cute_names_list)}, BHUTAN is FORBIDDEN 😠")
+
         else:
             await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
 
