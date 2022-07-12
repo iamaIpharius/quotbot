@@ -16,12 +16,21 @@ def do_glitch(url, level):
     # p_img = Image.open(img)
 
     im = Image.open(requests.get(url, stream=True).raw)
-    glitch_img = glitcher.glitch_image(im, level, color_offset=True)
-    if url.endswith('jpg'):
-        glitch_img.save('glitched_test.jpg')
-        image = discord.File(open('glitched_test.jpg', 'rb'))
-        return image
-    elif url.endswith('png'):
-        glitch_img.save('glitched_test.png')
-        image = discord.File(open('glitched_test.png', 'rb'))
-        return image
+    glitch_img = glitcher.glitch_image(im, level, color_offset=True, gif=True)
+    glitch_img[0].save('glitched_test.gif',
+                       format='GIF',
+                       append_images=glitch_img[1:],
+                       save_all=True,
+                       duration=200,
+                       loop=0)
+    image = discord.File(open('glitched_test.gif', 'rb'))
+    return image
+
+    # if url.endswith('jpg'):
+    #     glitch_img.save('glitched_test.jpg')
+    #     image = discord.File(open('glitched_test.jpg', 'rb'))
+    #     return image
+    # elif url.endswith('png'):
+    #     glitch_img.save('glitched_test.png')
+    #     image = discord.File(open('glitched_test.png', 'rb'))
+    #     return image
