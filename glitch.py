@@ -1,4 +1,5 @@
 from glitch_this import ImageGlitcher
+import discord
 import requests
 from io import BytesIO
 import urllib.request
@@ -18,5 +19,9 @@ def do_glitch(url, level):
     glitch_img = glitcher.glitch_image(im, level, color_offset=True)
     if url.endswith('jpg'):
         glitch_img.save('glitched_test.jpg')
+        image = discord.File(open('glitched_test.jpg', 'rb'))
+        return image
     elif url.endswith('png'):
         glitch_img.save('glitched_test.png')
+        image = discord.File(open('glitched_test.png', 'rb'))
+        return image
