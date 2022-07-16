@@ -129,3 +129,7 @@ dmypy.json
 db.json
 quotbot.sublime-project
 quotbot.sublime-workspace
+
+*.jpg
+*.png
+*.gif

@@ -16,10 +16,8 @@ reserv_template = {
     'UK': '',
     'USA main': '',
     'USA coop': '',
-    'France': '',
     'USSR main': '',
     'USSR coop': '',
-    'China': '',
     'British Raj': '',
     'Canada': '',
     'Australia': '',
@@ -38,7 +36,6 @@ reserv_template = {
     'Bulgaria': '',
     'Spain': '',
     'Finland': '',
-    'Vichy France': '',
     'Manchukuo': '',
     'Siam': ''
 }

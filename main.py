@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import database
 import reservation as rsrv
 import random
+import glitch as gl
 
 load_dotenv()
 my_secret = os.getenv('TOKEN')
@@ -34,6 +35,13 @@ def check_roles(msg):
 def check_reservations_channel(msg):
     chl = str(msg.channel)
     if chl in ['reservationstest', 'reservations']:
+        return True
+    return False
+
+
+def check_bot_channel(msg):
+    chl = str(msg.channel)
+    if chl in ['funbot']:
         return True
     return False
 
@@ -165,6 +173,17 @@ async def on_message(message):
         except database.EmptyError:
             await message.channel.send("There is none, please add some")
     await client.process_commands(message)
+    if check_bot_channel(message):
+        if message.author == client.user:
+            return
+        if message.attachments:
+            print(message.attachments)
+            img_url = message.attachments[0].url
+            level = 5
+            if type(message.content) == int and 0 < message.content <= 10:
+                level = message.content
+            final_image = gl.do_glitch(img_url, level)
+            await message.channel.send('Here you are!', file=final_image)
 
 
 @client.command()
@@ -210,6 +229,9 @@ async def res(ctx):
             else:
                 await ctx.send(
                     f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
+        elif msg in ['bhutan']:
+            await ctx.send(f"Hey {random.choice(cute_names_list)}, BHUTAN is FORBIDDEN 😠")
+
         else:
             await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
 
