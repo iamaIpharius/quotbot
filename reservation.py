@@ -9,11 +9,9 @@ countrys_dict = {
     'USA': ['usa', 'us', 'america', 'murica', 'states', 'united states', 'united states of america', '🇺🇸', 'us of a', 'burger', '🍔', '🦅', 'fdr', '🌭'],
     'USA main': ['usa_main', 'usa main', '🇺🇸 main', 'us main', 'us_main'],
     'USA coop': ['usa_coop', 'usa coop', '🇺🇸 coop', 'us coop', 'us_coop'],
-    'France': ['🇫🇷', 'fr', 'france', 'fronce', 'baguette', '🥖', '🐸', '🏳️', '🥐', '🧀'],
     'USSR': ['🇷🇺', 'sov', 'russia', 'soviet', 'ussr', 'stalin', 'gulag', 'vodka', '🐻', 'rus'],
     'USSR main': ['ussr_main', 'ussr main', 'sov main', '🇷🇺 main', 'sov_main'],
     'USSR coop': ['ussr_coop', 'ussr coop', 'sov coop', '🇷🇺 coop', 'sov_main'],
-    'China': ['🇹🇼', 'china', 'chi', 'chiang', 'kmt', '🐼', '🐉'],
     'British Raj': ['🇮🇳', 'raj', 'india', 'british raj', 'ind', '🥻', '🐯'],
     'Canada': ['🇨🇦', 'can', 'canada', '🍁', '🦌', '🐺', '🦆'],
     'Australia': ['🇦🇺', 'australia', 'aus', 'ast', 'au', 'aussie', 'kangaroo', '🦘'],
@@ -34,40 +32,11 @@ countrys_dict = {
     'Bulgaria': ['🇧🇬', 'bul', 'bulgaria', 'bowlgaria', 'bulgreenia', 'boris'],
     'Spain': ['🇪🇸', 'spain', 'pain', 'spr', 'spa', 'franco'],
     'Finland': ['🇫🇮', 'fin', 'finland', 'perkele', 'niet molotov', '🐻‍❄️'],
-    'Vichy France': ['vichy', 'vichy france', 'petain'],
     'Manchukuo': ['man', 'manchukuo', 'manchu', 'manchuria', 'puyi'],
     'Siam': ['🇹🇭', 'siam', 'thai', 'thailand', 'sia', '🐘']
 }
 
-country_list = [
-    'UK',
-    'USA main',
-    'USA coop',
-    'France',
-    'USSR main',
-    'USSR coop',
-    'China',
-    'British Raj',
-    'Canada',
-    'Australia',
-    'South Africa',
-    'New Zealand',
-    'Mexico',
-    'Brazil',
-    'Mongolia',
-    'Germany main',
-    'Germany coop',
-    'Italy',
-    'Japan main',
-    'Japan coop',
-    'Hungary',
-    'Romania',
-    'Bulgaria',
-    'Spain',
-    'Finland',
-    'Vichy France',
-    'Manchukuo',
-    'Siam']
+
 
 
 def check_reserves_empty(message, user, reserves):
