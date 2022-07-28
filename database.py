@@ -174,7 +174,11 @@ def get_res():
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
-        return base
+        count = 0
+        for key, value in base.items():
+            if value != '':
+                count += 1
+        return base, count
 
 
 def close_res():
