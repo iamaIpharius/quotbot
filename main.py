@@ -166,7 +166,9 @@ async def delete(ctx, arg):
 
 @client.event
 async def on_message(message):
-    if any(word in message.content.lower() for word in key_words):
+    if message.author == client.user:
+        return
+    elif any(word in message.content.lower() for word in key_words) and not message.content.lower().startswith('$'):
         try:
             result = database.get_random_quote()
             await message.channel.send(result)
