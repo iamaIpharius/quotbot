@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
 import random
 
 
@@ -27,7 +26,7 @@ countrys_dict = {
     'Japan': ['🇯🇵', 'anime', 'jp', 'japan', 'sushi', 'emperor', 'hirohito', 'jap', 'nippon', '🍣', '👘'],
     'Japan main': ['japan_main', 'japan main', '🇯🇵 main', 'jp main', 'jp_main'],
     'Japan coop': ['japan_coop', 'japan coop', '🇯🇵 coop', 'jp coop', 'jp_coop'],
-    'Hungary': ['🇭🇺', 'hun', 'hungary', 'hungry', 'gulash', 'horthy', 'horny', 'magyar'],
+    'Hungary': ['🇭🇺', 'hun', 'hungary', 'hungry', 'gulash', 'horthy', 'horny', 'magyar', "the hungry"],
     'Romania': ['🇷🇴', 'rom', 'romania', 'ganymania', 'judas'],
     'Bulgaria': ['🇧🇬', 'bul', 'bulgaria', 'bowlgaria', 'bulgreenia', 'boris'],
     'Spain': ['🇪🇸', 'spain', 'pain', 'spr', 'spa', 'franco'],
