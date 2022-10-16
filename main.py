@@ -164,7 +164,9 @@ async def delete(ctx, arg):
 
 @client.event
 async def on_message(message):
-    if any(word in message.content.lower() for word in key_words):
+    if message.author == client.user:
+        return
+    elif any(word in message.content.lower() for word in key_words) and not message.content.lower().startswith('$'):
         try:
             result = database.get_random_quote()
             await message.channel.send(result)
@@ -190,7 +192,7 @@ async def res_open(ctx):
         database.open_res()
         msg = "Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command $res to reserve country that you wanna play!\n"
 
-        reserves = database.get_res()
+        reserves, count = database.get_res()
         reserves_message_head = """
         🖋️ Nations can be reserved by their name, their flag, and their tag\n
         🖋️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)
@@ -219,7 +221,7 @@ async def res(ctx):
         if rsrv.country_check(msg):
             user = ctx.message.author.display_name
             user_mention = ctx.message.author.mention
-            reserves = database.get_res()
+            reserves, count = database.get_res()
             country = rsrv.make_country_name(msg, reserves)
             if rsrv.check_reserves_empty(msg, user, reserves):
                 database.update_res(user, country)
@@ -246,7 +248,7 @@ async def cancel(ctx):
 
         user = ctx.message.author.display_name
         user_mention = ctx.message.author.mention
-        reserves = database.get_res()
+        reserves, count = database.get_res()
         if rsrv.check_unreserve(user, reserves):
             country = database.get_country_by_user(user)
             database.remove_res(user)
@@ -267,14 +269,15 @@ async def status(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
         msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ:･ﾟ✧ ✧ﾟ･: ヽ(◕ヮ◕ヽ)'
 
-        reserves = database.get_res()
+        reserves, count = database.get_res()
+        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
         reserves_result = '\n'.join(
             ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
         embed = discord.Embed(
             title=msg,
             color=discord.Color.green(),
-            description=reserves_result
+            description=total_players_string + reserves_result
         )
 
         await ctx.send(embed=embed)
@@ -291,14 +294,15 @@ async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
         msg = "Reservations are closed! Here's the final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)"
 
-        reserves = database.get_res()
+        reserves, count = database.get_res()
+        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
         reserves_result = '\n'.join(
             ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
         embed = discord.Embed(
             title=msg,
             color=discord.Color.green(),
-            description=reserves_result
+            description=total_players_string + reserves_result
         )
 
         await ctx.send(embed=embed)
@@ -320,7 +324,7 @@ async def luck(ctx):
 
         user = ctx.message.author.display_name
         user_mention = ctx.message.author.mention
-        reserves = database.get_res()
+        reserves, count = database.get_res()
         if not rsrv.check_unreserve(user, reserves):
             country = rsrv.luck_choice(reserves)
             database.update_res(user, country)
@@ -330,7 +334,7 @@ async def luck(ctx):
             await ctx.send(f'Lucky choice for {user_mention} is **{country}** {lucky_str}')
         else:
             database.remove_res(user)
-            reserves = database.get_res()
+            reserves, count = database.get_res()
             country = rsrv.luck_choice(reserves)
             database.update_res(user, country)
             lucky_str = ''.join(
