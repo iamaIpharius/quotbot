@@ -7,12 +7,12 @@ db = TinyDB('db.json')
 Cursor = Query()
 
 
-class EmptyError(BaseException):
+class EmptyError(BaseException): #simple exeption
     def __init__(self):
         pass
 
 
-reserv_template = {
+reserv_template = { #template for reservation messages
     'UK': '',
     'USA main': '',
     'USA coop': '',
@@ -41,39 +41,12 @@ reserv_template = {
 }
 
 
-# reserv_template = {
-#     'UK :flag_gb:': '',
-#     'USA main :flag_us:': '',
-#     'USA coop :flag_us:': '',
-#     'France :flag_fr:': '',
-#     'USSR main 🇷🇺': '',
-#     'USSR coop 🇷🇺': '',
-#     'China 🇹🇼': '',
-#     'British Raj 🇮🇳': '',
-#     'Canada 🇨🇦': '',
-#     'Australia 🇦🇺': '',
-#     'South Africa 🇿🇦': '',
-#     'New Zealand 🇳🇿': '',
-#     'Mexico 🇲🇽': '',
-#     'Brazil 🇧🇷': '',
-#     'Mongolia 🇲🇳': '',
-#     'Germany main 🇩🇪': '',
-#     'Germany coop 🇩🇪': '',
-#     'Italy 🇮🇹': '',
-#     'Japan main 🇯🇵': '',
-#     'Japan coop 🇯🇵': '',
-#     'Hungary 🇭🇺': '',
-#     'Romania 🇷🇴': '',
-#     'Bulgaria 🇧🇬': '',
-#     'Spain 🇪🇸': '',
-#     'Finland 🇫🇮': '',
-#     'Vichy France 🇹🇫': '',
-#     'Manchukuo 🇳🇵': '',
-#     'Siam 🇹🇭': ''
-# }
+def update_quotes(quote: str):
+    """Update quotes list in DB with a new quote
 
-
-def update_quotes(quote):
+    Args:
+        quote (str): quote from player
+    """
     if db.get(Cursor.name == "player_quotes"):
         dict_quotes = db.get(Cursor.name == "player_quotes")
         print(dict_quotes)
@@ -86,6 +59,11 @@ def update_quotes(quote):
 
 
 def delete_last_quote():
+    """Deletes last adde quote from DB
+
+    Raises:
+        EmptyError: there is no quotes
+    """
     dict_quotes = db.get(Cursor.name == "player_quotes")
     base = dict_quotes['content']
     if type(base) is list:
@@ -96,7 +74,15 @@ def delete_last_quote():
         raise EmptyError
 
 
-def delete_quote(index):
+def delete_quote(index: int):
+    """Deletes quote by index
+
+    Args:
+        index (int): index of quote
+
+    Raises:
+        EmptyError: there is no quotes
+    """
     dict_quotes = db.get(Cursor.name == "player_quotes")
     base = dict_quotes['content']
     if type(base) is list:
@@ -109,6 +95,14 @@ def delete_quote(index):
 
 
 def get_random_quote():
+    """Gets random quote from DB
+
+    Raises:
+        EmptyError: there is no quotes
+
+    Returns:
+        str: random_quote
+    """
     dict_quotes = db.get(Cursor.name == "player_quotes")
     base = dict_quotes['content']
     if type(base) is list:
@@ -119,6 +113,14 @@ def get_random_quote():
 
 
 def get_list():
+    """Gets list of quotes from DB
+
+    Raises:
+        EmptyError:  there is no quotes
+
+    Returns:
+        str: one string made from list
+    """
     dict_quotes = db.get(Cursor.name == "player_quotes")
     base = dict_quotes['content']
     if type(base) is list:
@@ -131,6 +133,14 @@ def get_list():
 
 
 def get_last():
+    """Gets last adde quote
+
+    Raises:
+        EmptyError: there is no quotes
+
+    Returns:
+        str:  last_quote
+    """
     dict_quotes = db.get(Cursor.name == "player_quotes")
     base = dict_quotes['content']
     if type(base) is list:
@@ -141,6 +151,8 @@ def get_last():
 
 
 def open_res():
+    """Opens reservations and allows to write in DB also clean DB before that
+    """
     if db.get(Cursor.name == "reservations"):
         db.update({'content': reserv_template, 'flag': True},
                   Cursor.name == "reservations")
@@ -149,7 +161,13 @@ def open_res():
                    'content': reserv_template, 'flag': True})
 
 
-def update_res(user, country):
+def update_res(user: str, country: str):
+    """Add reserv from a user into DB
+
+    Args:
+        user (str): user
+        country (str): reserverd nation
+    """
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
@@ -160,6 +178,11 @@ def update_res(user, country):
 
 
 def remove_res(user):
+    """Deletes reservation made by user
+
+    Args:
+        user (str): user
+    """
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
@@ -170,7 +193,13 @@ def remove_res(user):
         db.update({'content': base}, Cursor.name == "reservations")
 
 
-def get_res():
+def get_res() -> dict|int:
+    """Gets current reservations and total number of players
+
+    Returns:
+        dict: reservations
+        int: total number of players
+    """
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']
@@ -182,6 +211,8 @@ def get_res():
 
 
 def close_res():
+    """Closes res, cleans DB
+    """
     if db.get(Cursor.name == "reservations"):
         db.update({'content': reserv_template, 'flag': False},
                   Cursor.name == "reservations")
@@ -190,14 +221,27 @@ def close_res():
                    'content': reserv_template, 'flag': False})
 
 
-def get_flag():
+def get_flag() -> bool:
+    """Gets flag is reservations are open or not
+
+    Returns:
+        flag(bool): are res open or not
+    """
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
-        base = dict_reservations['flag']
-        return base
+        flag = dict_reservations['flag']
+        return flag
 
 
-def get_country_by_user(user):
+def get_country_by_user(user: str) -> str:
+    """Gets nation by user
+
+    Args:
+        user (str): user 
+
+    Returns:
+        str: reserved nation
+    """
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
         base = dict_reservations['content']

@@ -1,3 +1,4 @@
+from email import message
 import discord
 from discord.ext import commands
 import os
@@ -6,8 +7,11 @@ import database
 import reservation as rsrv
 import random
 import glitch as gl
+from discord import message
 
-load_dotenv()
+
+
+load_dotenv() 
 my_secret = os.getenv('TOKEN')
 client = commands.Bot(command_prefix='$', help_command=None)
 key_words = ['hearts', 'hoi4']
@@ -18,7 +22,15 @@ lucky_choice_emotes = ['✨', '🌟', '🔥', '🥳', '🍀', '☘️', '😂', 
                        '😎', '🦄', '🍭', '🎈', '🎢', '🎡', '⚡', '🧙', '🎇', '🎆', '💎', '🌠', '😀', '🌞']
 
 
-def check_roles(msg):
+def check_roles(msg: message) -> bool:
+    """Checks role of the user to be in special list of roles
+
+    Args:
+        msg (message): message from user
+
+    Returns:
+        bool: bool
+    """
     try:
         author_roles = msg.author.roles
         access_roles = ['tester1', 'tester2', 'Field Marshal', 'Moderator']
@@ -30,14 +42,29 @@ def check_roles(msg):
         return False
 
 
-def check_reservations_channel(msg):
+def check_reservations_channel(msg: message) -> bool:
+    """Cheks if message written in Reservations channel
+
+    Args: msg (message):message from user
+
+    Returns:
+        bool: 
+    """
     chl = str(msg.channel)
     if chl in ['reservationstest', 'reservations']:
         return True
     return False
 
 
-def check_bot_channel(msg):
+def check_bot_channel(msg: message) -> bool:
+    """Checks if message has been wrote in funbot channel
+
+    Args:
+        msg (message): message from user
+
+    Returns:
+        bool: 
+    """
     chl = str(msg.channel)
     if chl in ['funbot']:
         return True
@@ -46,11 +73,11 @@ def check_bot_channel(msg):
 
 @client.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {client.user}') #message if bot starts successfully
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: message):
     if message.author == client.user:
         return
     await client.process_commands(message)
@@ -58,6 +85,14 @@ async def on_message(message):
 
 @client.command()
 async def help(ctx):
+    """Sends help info after help command for different channels
+
+    Args:
+        ctx (message): command help from user
+
+    Returns:
+        message to channel 
+    """
     if check_reservations_channel(ctx):
         msg = """### Below you can see **Reservations rules** and **Commands** to use bot 🤖\n\n
         🗒️ Nations can be reserved by their name, their flag, and their tag\n
@@ -111,6 +146,11 @@ async def help(ctx):
 
 @client.command()
 async def add(ctx):
+    """Command add, add a quote from user to database
+
+    Args:
+        ctx (context): context with message from user, which turning into quote
+    """
     if check_roles(ctx):
         new_quote = ctx.message.content.split("$add ", 1)[1]
         database.update_quotes(new_quote)
@@ -121,6 +161,11 @@ async def add(ctx):
 
 @client.command()
 async def delete_last(ctx):
+    """Deletes last added quote, need role to do that
+
+    Args:
+        ctx (context): context with command
+    """
     if check_roles(ctx):
         try:
             database.delete_last_quote()
@@ -133,6 +178,7 @@ async def delete_last(ctx):
 
 @client.command()
 async def list(ctx):
+    """Lists all quotes from database"""
     try:
         result = database.get_list()
         await ctx.send(result)
@@ -142,6 +188,11 @@ async def list(ctx):
 
 @client.command()
 async def last(ctx):
+    """Last added quote from database
+
+    Args:
+        ctx (context): context with command
+    """
     try:
         result = database.get_last()
         await ctx.send(result)
@@ -151,6 +202,12 @@ async def last(ctx):
 
 @client.command()
 async def delete(ctx, arg):
+    """Deletes quote from database by index
+
+    Args:
+        ctx (context): context with command
+        arg (str): index of quote
+    """
     if check_roles(ctx):
         index = int(arg)
         try:
@@ -164,6 +221,11 @@ async def delete(ctx, arg):
 
 @client.event
 async def on_message(message):
+    """Checks message for key-word, if there is a key word returns random quote from database
+
+    Args:
+        message (message): message from user, must be checked for key-words
+    """
     if message.author == client.user:
         return
     elif any(word in message.content.lower() for word in key_words) and not message.content.lower().startswith('$'):
@@ -188,6 +250,11 @@ async def on_message(message):
 
 @client.command()
 async def res_open(ctx):
+    """
+    Opens reservations for friday game
+    args:
+        ctx(context): context
+    """
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res()
         msg = "Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command $res to reserve country that you wanna play!\n"
@@ -216,6 +283,11 @@ async def res_open(ctx):
 
 @client.command()
 async def res(ctx):
+    """Command t oreserv a nation
+
+    Args:
+        ctx (context): context
+    """
     if check_reservations_channel(ctx) and database.get_flag():
         msg = ctx.message.content.split("$res ", 1)[1]
         if rsrv.country_check(msg):
@@ -244,6 +316,11 @@ async def res(ctx):
 
 @client.command()
 async def cancel(ctx):
+    """Cancels prev made reservation for user (if is)
+
+    Args:
+        ctx (context): context
+    """
     if check_reservations_channel(ctx) and database.get_flag():
 
         user = ctx.message.author.display_name
@@ -266,6 +343,9 @@ async def cancel(ctx):
 
 @client.command()
 async def status(ctx):
+    """
+        Write status of reserved nations by this time
+    """
     if check_reservations_channel(ctx) and database.get_flag():
         msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ:･ﾟ✧ ✧ﾟ･: ヽ(◕ヮ◕ヽ)'
 
@@ -291,6 +371,9 @@ async def status(ctx):
 
 @client.command()
 async def res_close(ctx):
+    """
+        Close reservation
+    """
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
         msg = "Reservations are closed! Here's the final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)"
 
@@ -320,6 +403,11 @@ async def res_close(ctx):
 
 @client.command()
 async def luck(ctx):
+    """Random choice of nation for friday game
+
+    Args:
+        ctx (context): context
+    """
     if check_reservations_channel(ctx) and database.get_flag():
 
         user = ctx.message.author.display_name

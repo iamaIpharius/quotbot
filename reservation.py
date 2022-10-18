@@ -3,7 +3,7 @@ from discord.ext import commands
 import random
 
 
-countrys_dict = {
+countrys_dict = { #dict of nations and key words
     'UK': ['uk', 'united kingdom', 'britain', 'brits', 'england', 'brit', 'eng', 'en', '🇬🇧', 'churchill'],
     'USA': ['usa', 'us', 'america', 'murica', 'states', 'united states', 'united states of america', '🇺🇸', 'us of a', 'burger', '🍔', '🦅', 'fdr', '🌭'],
     'USA main': ['usa_main', 'usa main', '🇺🇸 main', 'us main', 'us_main'],
@@ -38,7 +38,17 @@ countrys_dict = {
 
 
 
-def check_reserves_empty(message, user, reserves):
+def check_reserves_empty(message: str, user: str, reserves: dict) -> bool:
+    """Checks if a nation is empty for reserv
+
+    Args:
+        message (_type_): _description_
+        user (_type_): _description_
+        reserves (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     for val in reserves.values():
         if user in val:
             return False
@@ -54,13 +64,25 @@ def check_reserves_empty(message, user, reserves):
     return False
 
 
-def check_unreserve(user, reserves):
+def check_unreserve(user: str, reserves: dict) -> bool:
+    """Checks if a user reserves anything or not
+
+    Args:
+        user (str): _description_
+        reserves (dict): _description_
+
+    Returns:
+        bool: _description_
+    """
     if user in reserves.values():
         return True
     return False
 
 
-def make_country_name(message, reserves):
+def make_country_name(message: str, reserves: dict) -> str:
+    """
+    Generates a nation name from key and checks is this nation is not reserved
+    """
     country = ''
     for key, value in countrys_dict.items():
         if message.lower() in value:
@@ -70,14 +92,30 @@ def make_country_name(message, reserves):
                     return key
 
 
-def country_check(m):
-    for countries in countrys_dict.values():
-        if m.lower() in countries:
+def country_check(m: str) -> bool:
+    """Checks if message in keys of nations
+
+    Args:
+        m (str): _description_
+
+    Returns:
+        bool: _description_
+    """
+    for keys in countrys_dict.values():
+        if m.lower() in keys:
             return True
     return False
 
 
 def luck_choice(reserves):
+    """Randomly choses an unreserved nation 
+
+    Args:
+        reserves (dict): current reserves
+
+    Returns:
+        str: a free nation
+    """
     l = []
     for key, value in reserves.items():
         if value == '':
