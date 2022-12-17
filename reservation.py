@@ -11,7 +11,7 @@ countrys_dict = {
     'USA coop': ['usa_coop', 'usa coop', '🇺🇸 coop', 'us coop', 'us_coop'],
     'USSR': ['🇷🇺', 'sov', 'russia', 'soviet', 'ussr', 'stalin', 'gulag', 'vodka', '🐻', 'rus'],
     'USSR main': ['ussr_main', 'ussr main', 'sov main', '🇷🇺 main', 'sov_main'],
-    'USSR coop': ['ussr_coop', 'ussr coop', 'sov coop', '🇷🇺 coop', 'sov_main'],
+    'USSR coop': ['ussr_coop', 'ussr coop', 'sov coop', '🇷🇺 coop', 'sov_coop'],
     'British Raj': ['🇮🇳', 'raj', 'india', 'british raj', 'ind', '🥻', '🐯'],
     'Canada': ['🇨🇦', 'can', 'canada', '🍁', '🦌', '🐺', '🦆'],
     'Australia': ['🇦🇺', 'australia', 'aus', 'ast', 'au', 'aussie', 'kangaroo', '🦘'],
@@ -33,7 +33,8 @@ countrys_dict = {
     'Spain': ['🇪🇸', 'spain', 'pain', 'spr', 'spa', 'franco'],
     'Finland': ['🇫🇮', 'fin', 'finland', 'perkele', 'niet molotov', '🐻‍❄️'],
     'Manchukuo': ['man', 'manchukuo', 'manchu', 'manchuria', 'puyi'],
-    'Siam': ['🇹🇭', 'siam', 'thai', 'thailand', 'sia', '🐘']
+    'Siam': ['🇹🇭', 'siam', 'thai', 'thailand', 'sia', '🐘'],
+    'Vichy': ['vichy', 'petain', 'traitors', 'vic', 'vich']
 }
 
 

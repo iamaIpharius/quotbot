@@ -37,7 +37,8 @@ reserv_template = {
     'Spain': '',
     'Finland': '',
     'Manchukuo': '',
-    'Siam': ''
+    'Siam': '',
+    'Vichy': ''
 }
 
 
@@ -146,7 +147,7 @@ def open_res():
                   Cursor.name == "reservations")
     else:
         db.insert({'name': 'reservations',
-                   'content': reserv_template, 'flag': True})
+                   'content': reserv_template, 'flag': True, 'winner': {'axis':0, 'allies': 0}})
 
 
 def update_res(user, country):
@@ -181,13 +182,17 @@ def get_res():
         return base, count
 
 
-def close_res():
+def close_res(winner):
+    won_side = str(winner)
     if db.get(Cursor.name == "reservations"):
-        db.update({'content': reserv_template, 'flag': False},
+        dict_reservations = db.get(Cursor.name == "reservations")
+        win_stat = dict_reservations['winner']
+        win_stat[won_side] += 1
+        db.update({'content': reserv_template, 'flag': False, 'winner': win_stat},
                   Cursor.name == "reservations")
     else:
         db.insert({'name': 'reservations',
-                   'content': reserv_template, 'flag': False})
+                   'content': reserv_template, 'flag': False, 'winner': {'axis':0, 'allies': 0}})
 
 
 def get_flag():
@@ -204,3 +209,9 @@ def get_country_by_user(user):
         for key, value in base.items():
             if user == value:
                 return str(key)
+
+def get_score():
+    if db.get(Cursor.name == "reservations"):
+        dict_reservations = db.get(Cursor.name == "reservations")
+        win_stat = dict_reservations['winner']
+        return win_stat
