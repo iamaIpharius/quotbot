@@ -294,21 +294,38 @@ async def status(ctx):
 @client.command()
 async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
-        msg = "Reservations are closed! Here's the final status of the Game\n( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)"
+        if ctx.message.content == "$res_close":
+            msg = f"Wrong winner name, it must Axis or Allies!"
+            embed = discord.Embed(
+                title=msg,
+                color=discord.Color.green(),
+            )
+            await ctx.send(embed=embed)
+        else:
+            winner = ctx.message.content.split("$res_close ", 1)[1].lower()
+            if winner == 'axis' or winner == 'allies':
+                msg = f"Reservations are closed! Winner - {winner.upper()}"
 
-        reserves, count = database.get_res()
-        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
-        reserves_result = '\n'.join(
-            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
+                reserves, count = database.get_res()
+                total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
+                reserves_result = '\n'.join(
+                    ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
-        embed = discord.Embed(
-            title=msg,
-            color=discord.Color.green(),
-            description=total_players_string + reserves_result
-        )
+                embed = discord.Embed(
+                    title=msg,
+                    color=discord.Color.green(),
+                    description=total_players_string + reserves_result
+                )
 
-        await ctx.send(embed=embed)
-        database.close_res()
+                await ctx.send(embed=embed)
+                database.close_res(winner)
+            else:
+                msg = f"Wrong winner name, it must Axis or Allies!"
+                embed = discord.Embed(
+                    title=msg,
+                    color=discord.Color.green(),
+                )
+                await ctx.send(embed=embed)
 
     elif not check_reservations_channel(ctx):
         await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
@@ -350,5 +367,17 @@ async def luck(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+@client.command()
+async def score(ctx):
+    if check_reservations_channel(ctx):
+        base = database.get_score()
+        msg = f"Games score:\nAxis - {base['axis']}\nAllies - {base['allies']}"
+        embed = discord.Embed(
+                title=msg,
+                color=discord.Color.green(),
+            )
+        await ctx.send(embed=embed)
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 client.run(my_secret)
