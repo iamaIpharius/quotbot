@@ -66,7 +66,7 @@ async def help(ctx):
         🗒️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)\n\n
         Field Marshals and Moderators can open and close reservation process by using commands:\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
-        👉 $res_close "who won, axis or allies" - Reservations are closed, score saved 💀\n\n
+        👉 $res_close "who won, axis or allies or draw" - Reservations are closed, score saved 💀\n\n
         Other commands can be used by everyone!\n
         👉 $res country_name - Reserve the country!\n
         👉 $cancel - Cancel your reservation!\n
@@ -296,7 +296,7 @@ async def status(ctx):
 async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
         if ctx.message.content == "$res_close":
-            msg = f"Wrong winner name, it must Axis or Allies!"
+            msg = f"Wrong winner name, it must Axis or Allies or Draw!"
             embed = discord.Embed(
                 title=msg,
                 color=discord.Color.green(),
@@ -304,7 +304,7 @@ async def res_close(ctx):
             await ctx.send(embed=embed)
         else:
             winner = ctx.message.content.split("$res_close ", 1)[1].lower()
-            if winner == 'axis' or winner == 'allies':
+            if winner == 'axis' or winner == 'allies' or winner == 'draw':
                 msg = f"Reservations are closed! Winner - {winner.upper()}"
 
                 reserves, count = database.get_res()
@@ -321,7 +321,7 @@ async def res_close(ctx):
                 await ctx.send(embed=embed)
                 database.close_res(winner)
             else:
-                msg = f"Wrong winner name, it must Axis or Allies!"
+                msg = f"Wrong winner name, it must Axis or Allies or Draw!"
                 embed = discord.Embed(
                     title=msg,
                     color=discord.Color.green(),
@@ -372,7 +372,7 @@ async def luck(ctx):
 async def score(ctx):
     if check_reservations_channel(ctx):
         base = database.get_score()
-        msg = f"Games score:\nAxis - {base['axis']}\nAllies - {base['allies']}"
+        msg = f"Games score:\nAxis - {base['axis']}\nAllies - {base['allies']}\nDraw - {base['draw']}"
         embed = discord.Embed(
                 title=msg,
                 color=discord.Color.green(),

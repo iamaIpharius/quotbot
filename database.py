@@ -147,7 +147,7 @@ def open_res():
                   Cursor.name == "reservations")
     else:
         db.insert({'name': 'reservations',
-                   'content': reserv_template, 'flag': True, 'winner': {'axis':0, 'allies': 0}})
+                   'content': reserv_template, 'flag': True, 'winner': {'axis':0, 'allies': 0, 'draw': 0}})
 
 
 def update_res(user, country):
@@ -192,7 +192,7 @@ def close_res(winner):
                   Cursor.name == "reservations")
     else:
         db.insert({'name': 'reservations',
-                   'content': reserv_template, 'flag': False, 'winner': {'axis':0, 'allies': 0}})
+                   'content': reserv_template, 'flag': False, 'winner': {'axis':0, 'allies': 0, 'draw': 0}})
 
 
 def get_flag():
