@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
+
 import os
 from dotenv import load_dotenv
 import database
@@ -11,7 +11,7 @@ import glitch as gl
 load_dotenv()
 my_secret = os.getenv('TOKEN')
 client = commands.Bot(command_prefix='$', help_command=None)
-DiscordComponents(client)
+
 key_words = ['hearts', 'hoi4']
 cute_names_list = ['bestie', 'cutie', 'sweety', 'puppy', 'kitten', 'gorgeous', 'cutie pie',
                    'sunshine', 'sweetheart', 'muffin', 'sweetheart', 'sweet pea', 'cutie patootie']
