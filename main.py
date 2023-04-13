@@ -221,7 +221,18 @@ async def res_open(ctx):
 async def res(ctx):
     if check_reservations_channel(ctx) and database.get_flag():
         msg = ctx.message.content.split("$res ", 1)[1]
-        if rsrv.country_check(msg):
+        if msg == 'cancel':
+            user = ctx.message.author.display_name
+            user_mention = ctx.message.author.mention
+            reserves, count = database.get_res()
+            if rsrv.check_unreserve(user, reserves):
+                country = database.get_country_by_user(user)
+                database.remove_res(user)
+
+                await ctx.send(f'{user_mention} unreserved **{country}** 🏳️')
+            else:
+                await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+        elif rsrv.country_check(msg):
             user = ctx.message.author.display_name
             user_mention = ctx.message.author.mention
             reserves, count = database.get_res()
@@ -368,15 +379,16 @@ async def luck(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+
 @client.command()
 async def score(ctx):
     if check_reservations_channel(ctx):
         base = database.get_score()
         msg = f"Games score:\nAxis - {base['axis']}\nAllies - {base['allies']}\nDraw - {base['draw']}"
         embed = discord.Embed(
-                title=msg,
-                color=discord.Color.green(),
-            )
+            title=msg,
+            color=discord.Color.green(),
+        )
         await ctx.send(embed=embed)
     elif not check_reservations_channel(ctx):
         await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
