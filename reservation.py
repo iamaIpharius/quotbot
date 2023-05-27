@@ -38,11 +38,9 @@ countrys_dict = {
 }
 
 
-
-
 def check_reserves_empty(message, user, reserves):
     for val in reserves.values():
-        if user in val:
+        if user == val:
             return False
 
     country = ''
