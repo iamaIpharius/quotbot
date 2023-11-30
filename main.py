@@ -66,12 +66,11 @@ async def help(ctx):
         🗒️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)\n\n
         Field Marshals and Moderators can open and close reservation process by using commands:\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
-        👉 $res_close "who won, axis or allies or draw" - Reservations are closed, score saved 💀\n\n
+        👉 $res_close - Reservations are closed 💀\n\n
         Other commands can be used by everyone!\n
         👉 $res country_name - Reserve the country!\n
         👉 $cancel - Cancel your reservation!\n
         👉 $status - Display the current status of reservations\n
-        👉 $score - Display the current score of our games\n
         👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n
         Have fun!
         Reservations rules:\n
@@ -306,38 +305,23 @@ async def status(ctx):
 @client.command()
 async def res_close(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag():
-        if ctx.message.content == "$res_close":
-            msg = f"Wrong winner name, it must Axis or Allies or Draw!"
-            embed = discord.Embed(
-                title=msg,
-                color=discord.Color.green(),
-            )
-            await ctx.send(embed=embed)
-        else:
-            winner = ctx.message.content.split("$res_close ", 1)[1].lower()
-            if winner == 'axis' or winner == 'allies' or winner == 'draw':
-                msg = f"Reservations are closed! Winner - {winner.upper()}"
 
-                reserves, count = database.get_res()
-                total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
-                reserves_result = '\n'.join(
-                    ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
+        msg = f"Reservations are closed!"
 
-                embed = discord.Embed(
-                    title=msg,
-                    color=discord.Color.green(),
-                    description=total_players_string + reserves_result
-                )
+        reserves, count = database.get_res()
+        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
+        reserves_result = '\n'.join(
+            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
 
-                await ctx.send(embed=embed)
-                database.close_res(winner)
-            else:
-                msg = f"Wrong winner name, it must Axis or Allies or Draw!"
-                embed = discord.Embed(
-                    title=msg,
-                    color=discord.Color.green(),
-                )
-                await ctx.send(embed=embed)
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=total_players_string + reserves_result
+        )
+
+        await ctx.send(embed=embed)
+        database.close_res()
+
 
     elif not check_reservations_channel(ctx):
         await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
@@ -380,17 +364,5 @@ async def luck(ctx):
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 
-@client.command()
-async def score(ctx):
-    if check_reservations_channel(ctx):
-        base = database.get_score()
-        msg = f"Games score:\nAxis - {base['axis']}\nAllies - {base['allies']}\nDraw - {base['draw']}"
-        embed = discord.Embed(
-            title=msg,
-            color=discord.Color.green(),
-        )
-        await ctx.send(embed=embed)
-    elif not check_reservations_channel(ctx):
-        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 client.run(my_secret)
