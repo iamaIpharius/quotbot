@@ -182,7 +182,7 @@ def get_res():
         return base, count
 
 
-def close_res(winner):
+def close_res():
     if db.get(Cursor.name == "reservations"):
         db.update({'content': reserv_template, 'flag': False},
                   Cursor.name == "reservations")
