@@ -18,7 +18,6 @@ countrys_dict = {
     'South Africa': ['🇿🇦', 'saf', 'sa', 'south africa', 'africa', 'rsa', '🦁'],
     'New Zealand': ['🇳🇿', 'nz', 'new zealand', 'zealand', 'nzl', '🥝'],
     'Mexico': ['🇲🇽', 'mex', 'mexico', 'taco', '🌮'],
-    'Brazil': ['🇧🇷', 'br', 'brazil', 'bra', 'brz', 'you are coming to brazil', '🐒'],
     'Mongolia': ['🇲🇳', 'mon', 'mongolia', '🐴'],
     'Germany': ['🇩🇪', 'ger', 'germany', 'hitler', 'wiener', 'beer', '🍺', 'deutschland'],
     'Germany main': ['germany_main', 'germany main', '🇩🇪 main', 'ger main', 'ger_main'],
