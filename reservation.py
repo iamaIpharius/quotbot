@@ -37,17 +37,20 @@ countrys_dict_hist = {
 }
 
 countrys_dict_pony = {
-    'EQUESTRIA MAIN': ['equ main'],
-    'EQUESTRIA COOP': ['equ coop'],
-    'CRYSTAL EMPIRE': ['cry'],
-    'NEW MARELAND': ['mar'],
-    'STALLIONGRAD': ['sta'],
-    'CHANGELING LANDS MAIN': ['cha main'],
-    'CHANGELING LANDS COOP': ['cha coop'],
-    'WINGBARDY MAIN': ['win main'],
-    'WINGBARDY COOP': ['win coop'],
-    'OLENIA': ['ole'],
-    'POLAR BEARS': ['pol'],
+    'EQUESTRIA': ['equ', 'equestria'],
+    'EQUESTRIA MAIN': ['equ main', 'equestria main'],
+    'EQUESTRIA COOP': ['equ coop', 'equestria coop'],
+    'CRYSTAL EMPIRE': ['cry', 'crystal'],
+    'NEW MARELAND': ['mar', 'mareland'],
+    'STALLIONGRAD': ['sta', 'stalin', 'stalliongrad', 'grad'],
+    'CHANGELING LANDS': ['cha', 'change', 'lands'],
+    'CHANGELING LANDS MAIN': ['cha main', 'change main', 'lands main'],
+    'CHANGELING LANDS COOP': ['cha coop', 'change coop', 'lands coop'],
+    'WINGBARDY': ['win', 'wingbardy'],
+    'WINGBARDY MAIN': ['win main', 'wingbardy main'],
+    'WINGBARDY COOP': ['win coop', 'wingbardy coop'],
+    'OLENIA': ['ole', 'olenia'],
+    'POLAR BEARS': ['pol', 'polar', 'bears'],
 }
 
 

@@ -73,7 +73,7 @@ async def help(ctx):
         👉 $status - Display the current status of reservations\n
         👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n
         Have fun!\n\n\n
-        🐴🐴🐴🐴🐴 ### NOW BOT SUPPORTS PONY MOD 🐴🐴🐴🐴🐴\n\n
+        🐴🐴🐴🐴🐴 **BOT SUPPORTS PONY MOD** 🐴🐴🐴🐴🐴\n\n
         🦄 PONYNATIONS can be reserverd by their tag (3 firts letters)\n
         🦄 To reserve directly coop or main please tag with coop or main (i.e. $equ coop)\n\n
         **Field Marshals and Moderators can open and close reservation process by using commands:**\n
@@ -229,7 +229,7 @@ async def res_open(ctx):
 async def res_open_pony(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx):
         database.open_res_pony()
-        msg = "Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command $res_pony to reserve **PONYMOD NATION** that you wanna play!"
+        msg = "🐎🐎🐎 Here we go! 🐎🐎🐎\nPlease use command $res_pony to reserve **PONYMOD NATION** that you wanna play!"
 
 
         reserves, count = database.get_res_pony()
@@ -396,7 +396,7 @@ async def status(ctx):
 @client.command()
 async def status_pony(ctx):
     if check_reservations_channel(ctx) and database.get_flag_pony():
-        msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ:･ﾟ✧ ✧ﾟ･: ヽ(◕ヮ◕ヽ)'
+        msg = '🐎🐎🐎 Status of the Game 🐎🐎🐎'
 
         reserves, count = database.get_res_pony()
         total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
@@ -451,7 +451,7 @@ async def res_close(ctx):
 async def res_close_pony(ctx):
     if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag_pony():
 
-        msg = f"Reservations are closed!"
+        msg = f"🐎🐎🐎Reservations are closed!🐎🐎🐎"
 
         reserves, count = database.get_res_pony()
         total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
