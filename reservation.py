@@ -4,7 +4,7 @@ from discord.ext import commands
 import random
 
 
-countrys_dict = {
+countrys_dict_hist = {
     'UK': ['uk', 'united kingdom', 'britain', 'brits', 'england', 'brit', 'eng', 'en', '🇬🇧', 'churchill'],
     'USA': ['usa', 'us', 'america', 'murica', 'states', 'united states', 'united states of america', '🇺🇸', 'us of a', 'burger', '🍔', '🦅', 'fdr', '🌭'],
     'USA main': ['usa_main', 'usa main', '🇺🇸 main', 'us main', 'us_main'],
@@ -36,8 +36,22 @@ countrys_dict = {
     'Vichy': ['vichy', 'petain', 'traitors', 'vic', 'vich']
 }
 
+countrys_dict_pony = {
+    'EQUESTRIA MAIN': ['equ main'],
+    'EQUESTRIA COOP': ['equ coop'],
+    'CRYSTAL EMPIRE': ['cry'],
+    'NEW MARELAND': ['mar'],
+    'STALLIONGRAD': ['sta'],
+    'CHANGELING LANDS MAIN': ['cha main'],
+    'CHANGELING LANDS COOP': ['cha coop'],
+    'WINGBARDY MAIN': ['win main'],
+    'WINGBARDY COOP': ['win coop'],
+    'OLENIA': ['ole'],
+    'POLAR BEARS': ['pol'],
+}
 
-def check_reserves_empty(message, user, reserves):
+
+def check_reserves_empty(message, user, reserves, countrys_dict):
     for val in reserves.values():
         if user == val:
             return False
@@ -59,7 +73,7 @@ def check_unreserve(user, reserves):
     return False
 
 
-def make_country_name(message, reserves):
+def make_country_name(message, reserves, countrys_dict):
     country = ''
     for key, value in countrys_dict.items():
         if message.lower() in value:
@@ -69,7 +83,7 @@ def make_country_name(message, reserves):
                     return key
 
 
-def country_check(m):
+def country_check(m, countrys_dict):
     for countries in countrys_dict.values():
         if m.lower() in countries:
             return True

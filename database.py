@@ -40,7 +40,19 @@ reserv_template = {
     'Siam': '',
     'Vichy': ''
 }
-
+reserv_template_pony = {
+    'EQUESTRIA MAIN': '',
+    'EQUESTRIA COOP': '',
+    'CRYSTAL EMPIRE': '',
+    'NEW MARELAND': '',
+    'STALLIONGRAD': '',
+    'CHANGELING LANDS MAIN': '',
+    'CHANGELING LANDS COOP': '',
+    'WINGBARDY MAIN': '',
+    'WINGBARDY COOP': '',
+    'OLENIA': '',
+    'POLAR BEARS': '',
+}
 
 # reserv_template = {
 #     'UK :flag_gb:': '',
@@ -149,6 +161,13 @@ def open_res():
         db.insert({'name': 'reservations',
                    'content': reserv_template, 'flag': True})
 
+def open_res_pony():
+    if db.get(Cursor.name == "reservations_pony"):
+        db.update({'content': reserv_template_pony, 'flag': True},
+                  Cursor.name == "reservations_pony")
+    else:
+        db.insert({'name': 'reservations_pony',
+                   'content': reserv_template_pony, 'flag': True})
 
 def update_res(user, country):
     if db.get(Cursor.name == "reservations"):
@@ -159,6 +178,14 @@ def update_res(user, country):
     else:
         db.insert({'name': 'reservations', 'content': {country: user}})
 
+def update_res_pony(user, country):
+    if db.get(Cursor.name == "reservations_pony"):
+        dict_reservations = db.get(Cursor.name == "reservations_pony")
+        base = dict_reservations['content']
+        base[country] = user
+        db.update({'content': base}, Cursor.name == "reservations_pony")
+    else:
+        db.insert({'name': 'reservations_pony', 'content': {country: user}})
 
 def remove_res(user):
     if db.get(Cursor.name == "reservations"):
@@ -170,6 +197,15 @@ def remove_res(user):
 
         db.update({'content': base}, Cursor.name == "reservations")
 
+def remove_res_pony(user):
+    if db.get(Cursor.name == "reservations_pony"):
+        dict_reservations = db.get(Cursor.name == "reservations_pony")
+        base = dict_reservations['content']
+        for key, value in base.items():
+            if user == value:
+                base[key] = ''
+
+        db.update({'content': base}, Cursor.name == "reservations_pony")
 
 def get_res():
     if db.get(Cursor.name == "reservations"):
@@ -181,6 +217,15 @@ def get_res():
                 count += 1
         return base, count
 
+def get_res_pony():
+    if db.get(Cursor.name == "reservations_pony"):
+        dict_reservations = db.get(Cursor.name == "reservations_pony")
+        base = dict_reservations['content']
+        count = 0
+        for key, value in base.items():
+            if value != '':
+                count += 1
+        return base, count
 
 def close_res():
     if db.get(Cursor.name == "reservations"):
@@ -190,6 +235,13 @@ def close_res():
         db.insert({'name': 'reservations',
                    'content': reserv_template, 'flag': False})
 
+def close_res_pony():
+    if db.get(Cursor.name == "reservations_pony"):
+        db.update({'content': reserv_template_pony, 'flag': False},
+                  Cursor.name == "reservations_pony")
+    else:
+        db.insert({'name': 'reservations_pony',
+                   'content': reserv_template_pony, 'flag': False})
 
 def get_flag():
     if db.get(Cursor.name == "reservations"):
@@ -197,10 +249,23 @@ def get_flag():
         base = dict_reservations['flag']
         return base
 
+def get_flag_pony():
+    if db.get(Cursor.name == "reservations_pony"):
+        dict_reservations = db.get(Cursor.name == "reservations_pony")
+        base = dict_reservations['flag']
+        return base
 
 def get_country_by_user(user):
     if db.get(Cursor.name == "reservations"):
         dict_reservations = db.get(Cursor.name == "reservations")
+        base = dict_reservations['content']
+        for key, value in base.items():
+            if user == value:
+                return str(key)
+            
+def get_country_by_user_pony(user):
+    if db.get(Cursor.name == "reservations_pony"):
+        dict_reservations = db.get(Cursor.name == "reservations_pony")
         base = dict_reservations['content']
         for key, value in base.items():
             if user == value:

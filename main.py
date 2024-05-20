@@ -64,15 +64,25 @@ async def help(ctx):
         msg = """### Below you can see **Reservations rules** and **Commands** to use bot 🤖\n\n
         🗒️ Nations can be reserved by their name, their flag, and their tag\n
         🗒️ To reserve directly coop or main please use nation name, flag or tag with coop or main (i.e. $ger coop)\n\n
-        Field Marshals and Moderators can open and close reservation process by using commands:\n
+        **Field Marshals and Moderators can open and close reservation process by using commands:**\n
         👉 $res_open - Reservations are open! Everyone is free to reserve\n
         👉 $res_close - Reservations are closed 💀\n\n
-        Other commands can be used by everyone!\n
+        **Other commands can be used by everyone!**\n
         👉 $res country_name - Reserve the country!\n
         👉 $cancel - Cancel your reservation!\n
         👉 $status - Display the current status of reservations\n
         👉 $luck - .......TRY YOUR LUCK (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n
-        Have fun!
+        Have fun!\n\n\n
+        🐴🐴🐴🐴🐴 ### NOW BOT SUPPORTS PONY MOD 🐴🐴🐴🐴🐴\n\n
+        🦄 PONYNATIONS can be reserverd by their tag (3 firts letters)\n
+        🦄 To reserve directly coop or main please tag with coop or main (i.e. $equ coop)\n\n
+        **Field Marshals and Moderators can open and close reservation process by using commands:**\n
+        🐎 $res_open_pony - Reservations are open! Everyone is free to reserve\n
+        🐎 $res_close_pony - Reservations are closed 💀\n\n
+        **Other commands can be used by everyone!**\n
+        🐎 $res_pony country_name - Reserve the country!\n
+        🐎 $cancel_pony - Cancel your reservation!\n
+        🐎 $status_pony - Display the current status of reservations\n\n
         Reservations rules:\n
         🖋️ This script applies to Historical games.\n
         🖋️ If you reserve a nation please be willing and able to show up on time on game day.\n
@@ -215,6 +225,33 @@ async def res_open(ctx):
     elif not check_roles(ctx):
         await ctx.send(f"Not enough rights {random.choice(cute_names_list)} :c")
 
+@client.command()
+async def res_open_pony(ctx):
+    if check_reservations_channel(ctx) and check_roles(ctx):
+        database.open_res_pony()
+        msg = "Here we go! (☞ﾟ∀ﾟ)☞\nPlease use command $res_pony to reserve **PONYMOD NATION** that you wanna play!"
+
+
+        reserves, count = database.get_res_pony()
+        reserves_message_head = """
+        🖋️ Nations can be reserved by their name or tag (first 3 letters) EXAMPLE: $res_pony pol\n
+        🖋️ To reserve directly coop or main please use nation name, tag (first 3 letters) with coop or main (i.e. $equ coop)
+
+        """
+        reserves_result = '\n'.join(
+            ' - '.join((key, val)) for (key, val) in reserves.items())
+
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=reserves_message_head + reserves_result
+        )
+        await ctx.send(embed=embed)
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+    elif not check_roles(ctx):
+        await ctx.send(f"Not enough rights {random.choice(cute_names_list)} :c")
 
 @client.command()
 async def res(ctx):
@@ -231,12 +268,12 @@ async def res(ctx):
                 await ctx.send(f'{user_mention} unreserved **{country}** 🏳️')
             else:
                 await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
-        elif rsrv.country_check(msg):
+        elif rsrv.country_check(msg, rsrv.countrys_dict_hist):
             user = ctx.message.author.display_name
             user_mention = ctx.message.author.mention
             reserves, count = database.get_res()
-            country = rsrv.make_country_name(msg, reserves)
-            if rsrv.check_reserves_empty(msg, user, reserves):
+            country = rsrv.make_country_name(msg, reserves, rsrv.countrys_dict_hist)
+            if rsrv.check_reserves_empty(msg, user, reserves, rsrv.countrys_dict_hist):
                 database.update_res(user, country)
                 await ctx.send(f'{user_mention} reserved **{country}**!')
             else:
@@ -254,6 +291,41 @@ async def res(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+@client.command()
+async def res_pony(ctx):
+    if check_reservations_channel(ctx) and database.get_flag_pony():
+        msg = ctx.message.content.split("$res_pony ", 1)[1]
+        if msg == 'cancel':
+            user = ctx.message.author.display_name
+            user_mention = ctx.message.author.mention
+            reserves, count = database.get_res_pony()
+            if rsrv.check_unreserve(user, reserves):
+                country = database.get_country_by_user_pony(user)
+                database.remove_res_pony(user)
+
+                await ctx.send(f'{user_mention} unreserved **{country}** 🏳️')
+            else:
+                await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+        elif rsrv.country_check(msg, rsrv.countrys_dict_pony):
+            user = ctx.message.author.display_name
+            user_mention = ctx.message.author.mention
+            reserves, count = database.get_res_pony()
+            country = rsrv.make_country_name(msg, reserves, rsrv.countrys_dict_pony)
+            if rsrv.check_reserves_empty(msg, user, reserves, rsrv.countrys_dict_pony):
+                database.update_res_pony(user, country)
+                await ctx.send(f'{user_mention} reserved **{country}**!')
+            else:
+                await ctx.send(
+                    f"Prolly country already reserved, or you already have reservation, {random.choice(cute_names_list)} ¯\_(ツ)_/¯. Check $status 😉")
+
+        else:
+            await ctx.send(f"Prolly you misspelled country name, {random.choice(cute_names_list)}, try again 😉")
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 @client.command()
 async def cancel(ctx):
@@ -276,6 +348,26 @@ async def cancel(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+@client.command()
+async def cancel_pony(ctx):
+    if check_reservations_channel(ctx) and database.get_flag_pony():
+
+        user = ctx.message.author.display_name
+        user_mention = ctx.message.author.mention
+        reserves, count = database.get_res_pony()
+        if rsrv.check_unreserve(user, reserves, rsrv.countrys_dict_pony):
+            country = database.get_country_by_user_pony(user)
+            database.remove_res_pony(user)
+
+            await ctx.send(f'{user_mention} unreserved **{country}** 🏳️')
+        else:
+            await ctx.send(f"Prolly you didn't reserve anything, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 @client.command()
 async def status(ctx):
@@ -301,6 +393,29 @@ async def status(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+@client.command()
+async def status_pony(ctx):
+    if check_reservations_channel(ctx) and database.get_flag_pony():
+        msg = 'Status of the Game (ﾉ◕ヮ◕)ﾉ:･ﾟ✧ ✧ﾟ･: ヽ(◕ヮ◕ヽ)'
+
+        reserves, count = database.get_res_pony()
+        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
+        reserves_result = '\n'.join(
+            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
+
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=total_players_string + reserves_result
+        )
+
+        await ctx.send(embed=embed)
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 @client.command()
 async def res_close(ctx):
@@ -332,6 +447,35 @@ async def res_close(ctx):
     else:
         await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
+@client.command()
+async def res_close_pony(ctx):
+    if check_reservations_channel(ctx) and check_roles(ctx) and database.get_flag_pony():
+
+        msg = f"Reservations are closed!"
+
+        reserves, count = database.get_res_pony()
+        total_players_string = f"""\n```fix\nTotal players: {count}```\n"""
+        reserves_result = '\n'.join(
+            ' - '.join((key, val if len(val) < 2 else f"**{val}**")) for (key, val) in reserves.items())
+
+        embed = discord.Embed(
+            title=msg,
+            color=discord.Color.green(),
+            description=total_players_string + reserves_result
+        )
+
+        await ctx.send(embed=embed)
+        database.close_res()
+
+
+    elif not check_reservations_channel(ctx):
+        await ctx.send(f"Wrong channel, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
+
+    elif not check_roles(ctx):
+        await ctx.send(f"Not enough rights, {random.choice(cute_names_list)} :c")
+
+    else:
+        await ctx.send(f"Reservations aren't open yet, {random.choice(cute_names_list)} ¯\_(ツ)_/¯")
 
 @client.command()
 async def luck(ctx):
