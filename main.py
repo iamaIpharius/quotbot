@@ -355,7 +355,7 @@ async def cancel_pony(ctx):
         user = ctx.message.author.display_name
         user_mention = ctx.message.author.mention
         reserves, count = database.get_res_pony()
-        if rsrv.check_unreserve(user, reserves, rsrv.countrys_dict_pony):
+        if rsrv.check_unreserve(user, reserves):
             country = database.get_country_by_user_pony(user)
             database.remove_res_pony(user)
 
