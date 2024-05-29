@@ -48,7 +48,7 @@ reserv_template_pony = {
     'STALLIONGRAD': '',
     'CHANGELING LANDS MAIN': '',
     'CHANGELING LANDS COOP': '',
-    'WINGBARDY': '',
+    'GRENECLYF': '',
     'OLENIA': '',
     'POLAR BEARS': '',
 }
