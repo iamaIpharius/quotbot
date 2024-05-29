@@ -47,8 +47,6 @@ countrys_dict_pony = {
     'CHANGELING LANDS MAIN': ['cha main', 'change main', 'lands main'],
     'CHANGELING LANDS COOP': ['cha coop', 'change coop', 'lands coop'],
     'WINGBARDY': ['win', 'wingbardy'],
-    'WINGBARDY MAIN': ['win main', 'wingbardy main'],
-    'WINGBARDY COOP': ['win coop', 'wingbardy coop'],
     'OLENIA': ['ole', 'olenia'],
     'POLAR BEARS': ['pol', 'polar', 'bears'],
 }
