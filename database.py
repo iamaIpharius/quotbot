@@ -51,7 +51,11 @@ reserv_template_pony = {
     'GRENECLYF': '',
     'OLENIA': '',
     'POLAR BEARS': '',
-    'WINGBARDY': ''
+    'WINGBARDY': '',
+    'HIPPOGRIFFIA MAIN': '',
+    'HIPPOGRIFFIA COOP': '',
+    'COLTHAGE': '',
+    'CHIROPTERRA': '',
 }
 
 # reserv_template = {

@@ -50,6 +50,10 @@ countrys_dict_pony = {
     'GRENECLYF': ['gre', 'greneclyf'],
     'OLENIA': ['ole', 'olenia'],
     'POLAR BEARS': ['pol', 'polar', 'bears'],
+    'HIPPOGRIFFIA': ['hip','hip main', 'hippogriffia'],
+    'HIPPOGRIFFIA COOP': ['hip','hip coop', 'hippogriffia'],
+    'COLTHAGE': ['col','colthage' ],
+    'CHIROPTERRA': ['chi', 'chiropterra'],
 }
 
 
