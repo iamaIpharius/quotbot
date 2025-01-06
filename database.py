@@ -48,6 +48,7 @@ reserv_template_pony = {
     'STALLIONGRAD': '',
     'CHANGELING LANDS MAIN': '',
     'CHANGELING LANDS COOP': '',
+    'CHANGELING LANDS COOP #2': '',
     'OLENIA': '',
     'POLAR BEARS': '',
     'WINGBARDY': '',
@@ -55,6 +56,8 @@ reserv_template_pony = {
     'HIPPOGRIFFIA COOP': '',
     'COLTHAGE': '',
     'CHIROPTERRA': '',
+    'BUFFALO KINGDOM': '',
+    'WARZENA KINGDOM': ''
 }
 
 # reserv_template = {

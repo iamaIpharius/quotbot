@@ -37,23 +37,26 @@ countrys_dict_hist = {
 }
 
 countrys_dict_pony = {
-    'EQUESTRIA': ['equ', 'equestria'],
-    'EQUESTRIA MAIN': ['equ main', 'equestria main'],
-    'EQUESTRIA COOP': ['equ coop', 'equestria coop'],
-    'CRYSTAL EMPIRE': ['cry', 'crystal'],
-    'NEW MARELAND': ['mar', 'mareland'],
-    'STALLIONGRAD': ['sta', 'stalin', 'stalliongrad', 'grad'],
-    'CHANGELING LANDS': ['cha', 'change', 'lands'],
-    'CHANGELING LANDS MAIN': ['cha main', 'change main', 'lands main'],
-    'CHANGELING LANDS COOP': ['cha coop', 'change coop', 'lands coop'],
-    'WINGBARDY': ['win', 'wingbardy'],
+    'EQUESTRIA': ['eqs','equ', 'equestria', 'pony', '🦄', 'celestia'],
+    'EQUESTRIA MAIN': ['equ main','eqs main', 'equestria main','pony', '🦄', 'celestia'],
+    'EQUESTRIA COOP': ['equ coop','eqs coop', 'equestria coop','pony', '🦄', 'celestia'],
+    'CRYSTAL EMPIRE': ['cry', 'crystal','🍁'],
+    'NEW MARELAND': ['eqc','mar', 'mareland','🦘'],
+    'STALLIONGRAD': ['stg','sta', 'stalin', 'stalliongrad', 'grad','🐯'],
+    'CHANGELING LANDS': ['chn','cha', 'change', 'changelings','changeling', 'lands','🪲','🇩🇪', '🍺'],
+    'CHANGELING LANDS MAIN': ['chn main','cha main', 'change main', 'lands main','🪲','🇩🇪', '🍺'],
+    'CHANGELING LANDS COOP': ['chn coop','cha coop', 'change coop', 'lands coop','🪲','🇩🇪', '🍺'],
+    'CHANGELING LANDS COOP #2': ['chn coop','cha coop', 'change coop', 'lands coop','🪲','🇩🇪', '🍺'],
+    'WINGBARDY': ['wng','win', 'wingbardy','🇮🇹', 'mama mia','spaghetti','pizza','🍝', '🍕'],
     'GRENECLYF': ['gre', 'greneclyf'],
-    'OLENIA': ['ole', 'olenia'],
-    'POLAR BEARS': ['pol', 'polar', 'bears'],
-    'HIPPOGRIFFIA': ['hip','hip main', 'hippogriffia'],
-    'HIPPOGRIFFIA COOP': ['hip','hip coop', 'hippogriffia'],
-    'COLTHAGE': ['col','colthage' ],
-    'CHIROPTERRA': ['chi', 'chiropterra'],
+    'OLENIA': ['ole', 'olenia', 'deer', '🏳️‍🌈', '🦌'],
+    'POLAR BEARS': ['plb','pol', 'polar', 'bears','🐻‍❄️', 'polar bears', 'polar bear'],
+    'HIPPOGRIFFIA': ['hip','hip main', 'hippogriffia', ':posadaChamp:'],
+    'HIPPOGRIFFIA COOP': ['hip','hip coop', 'hippogriffia', ':posadaChamp:'],
+    'COLTHAGE': ['cth','col','colthage', 'hannibal', '🐘'],
+    'CHIROPTERRA': ['bat','chi', 'chiropterra', '🦇'],
+    'BUFFALO KINGDOM': ['buf', 'buffalo', 'gorick', 'crake', '🦬'],
+    'WARZENA KINGDOM': ['war', 'warzena', 'zena','🦓']
 }
 
 
