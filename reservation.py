@@ -4,7 +4,6 @@ from discord.ext import commands
 import random
 
 
-countrys_dict = { #dict of nations and key words
 countrys_dict_hist = {
     'UK': ['uk', 'united kingdom', 'britain', 'brits', 'england', 'brit', 'eng', 'en', '🇬🇧', 'churchill'],
     'USA': ['usa', 'us', 'america', 'murica', 'states', 'united states', 'united states of america', '🇺🇸', 'us of a', 'burger', '🍔', '🦅', 'fdr', '🌭'],
@@ -27,30 +26,12 @@ countrys_dict_hist = {
     'Japan': ['🇯🇵', 'anime', 'jp', 'japan', 'sushi', 'emperor', 'hirohito', 'jap', 'nippon', '🍣', '👘'],
     'Japan main': ['japan_main', 'japan main', '🇯🇵 main', 'jp main', 'jp_main'],
     'Japan coop': ['japan_coop', 'japan coop', '🇯🇵 coop', 'jp coop', 'jp_coop'],
-    'Hungary': ['🇭🇺', 'hun', 'hungary', 'hungry', 'gulash', 'horthy', 'horny', 'magyar', "the hunger"],
     'Hungary': ['🇭🇺', 'hun', 'hungary', 'hungry', 'gulash', 'horthy', 'horny', 'magyar', 'the hunger'],
     'Romania': ['🇷🇴', 'rom', 'romania', 'ganymania', 'judas'],
     'Bulgaria': ['🇧🇬', 'bul', 'bulgaria', 'bowlgaria', 'bulgreenia', 'boris'],
     'Spain': ['🇪🇸', 'spain', 'pain', 'spr', 'spa', 'franco'],
     'Finland': ['🇫🇮', 'fin', 'finland', 'perkele', 'niet molotov', '🐻‍❄️'],
     'Manchukuo': ['man', 'manchukuo', 'manchu', 'manchuria', 'puyi'],
-    'Siam': ['🇹🇭', 'siam', 'thai', 'thailand', 'sia', '🐘']
-}
-
-
-
-
-def check_reserves_empty(message: str, user: str, reserves: dict) -> bool:
-    """Checks if a nation is empty for reserv
-
-    Args:
-        message (_type_): _description_
-        user (_type_): _description_
-        reserves (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
     'Siam': ['🇹🇭', 'siam', 'thai', 'thailand', 'sia', '🐘'],
     'Vichy': ['vichy', 'petain', 'traitors', 'vic', 'vich']
 }
@@ -95,25 +76,12 @@ def check_reserves_empty(message, user, reserves, countrys_dict):
     return False
 
 
-def check_unreserve(user: str, reserves: dict) -> bool:
-    """Checks if a user reserves anything or not
-
-    Args:
-        user (str): _description_
-        reserves (dict): _description_
-
-    Returns:
-        bool: _description_
-    """
+def check_unreserve(user, reserves):
     if user in reserves.values():
         return True
     return False
 
 
-def make_country_name(message: str, reserves: dict) -> str:
-    """
-    Generates a nation name from key and checks is this nation is not reserved
-    """
 def make_country_name(message, reserves, countrys_dict):
     country = ''
     for key, value in countrys_dict.items():
@@ -124,17 +92,6 @@ def make_country_name(message, reserves, countrys_dict):
                     return key
 
 
-def country_check(m: str) -> bool:
-    """Checks if message in keys of nations
-
-    Args:
-        m (str): _description_
-
-    Returns:
-        bool: _description_
-    """
-    for keys in countrys_dict.values():
-        if m.lower() in keys:
 def country_check(m, countrys_dict):
     for countries in countrys_dict.values():
         if m.lower() in countries:
@@ -143,14 +100,6 @@ def country_check(m, countrys_dict):
 
 
 def luck_choice(reserves):
-    """Randomly choses an unreserved nation 
-
-    Args:
-        reserves (dict): current reserves
-
-    Returns:
-        str: a free nation
-    """
     l = []
     for key, value in reserves.items():
         if value == '':
