@@ -147,7 +147,13 @@ async def delete_last(ctx):
 async def list(ctx):
     try:
         result = database.get_list()
-        await ctx.send(result)
+        print(len(result))
+        embed = discord.Embed(
+            title="Alright, here are QUOTES",
+            description=result,
+            color=discord.Color.green()
+        )
+        await ctx.send(embed=embed)
     except database.EmptyError:
         await ctx.send("There is none, please add some")
 
